@@ -30,7 +30,6 @@ form {
   width: 30rem;
   padding: 2rem;
   margin: 0 auto;
-  margin-top: calc(80vh - 50%);
   border: plum 1px solid;
   border-radius: 1rem;
   background: rgba(255, 255, 255, 0.2); /* Transparent white */

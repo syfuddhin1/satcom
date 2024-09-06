@@ -1,3 +1,4 @@
+import { addUser } from "@/lib";
 import React from "react";
 
 export default function RegistrationPage() {
@@ -8,9 +9,9 @@ export default function RegistrationPage() {
         "use server";
         console.log("formData", formData);
         // TODO: implement registration logic
+        await addUser(formData);
       }}
     >
-      <caption>Registration Form</caption>
       <label>
         Email
         <input name="email" type="email" />

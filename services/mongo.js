@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const MONGO_URI = process.env.MONGO_URI;
+const MONGO_URI = process.env.MONGODB_URI;
 const cached = {};
 async function connectMongo() {
   if (!MONGO_URI) {

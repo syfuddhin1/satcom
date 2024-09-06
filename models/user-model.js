@@ -27,18 +27,13 @@ const userSchema = new Schema(
       required: false,
       type: String,
     },
-
-    phone: {
+    code: {
       required: false,
       type: String,
     },
-    shipping_address: {
+    phone: {
       required: false,
-      type: Object,
-    },
-    billing_address: {
-      required: false,
-      type: Object,
+      type: String,
     },
   },
   { timestamps: true }
