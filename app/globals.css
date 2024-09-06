@@ -25,3 +25,40 @@ body {
     text-wrap: balance;
   }
 }
+
+form {
+  width: 30rem;
+  padding: 2rem;
+  margin: 0 auto;
+  margin-top: calc(80vh - 50%);
+  border: plum 1px solid;
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.2); /* Transparent white */
+  border-radius: 15px;
+  backdrop-filter: blur(10px); /* Creates the glass effect */
+  -webkit-backdrop-filter: blur(10px); /* For Safari */
+  box-shadow: 4px 4px 10px rgba(255, 255, 255, 0.5),
+    /* Inner soft white shadow */ -4px -4px 15px rgba(0, 0, 0, 0.2); /* Outer soft dark shadow */
+  border: 1px solid rgba(255, 255, 255, 0.18); /* Optional border */
+}
+form label {
+  display: inline-flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  align-items: center;
+}
+form input {
+  border: 1px saddlebrown solid;
+  width: 15rem;
+  height: 2rem;
+  padding-left: 1rem;
+}
+form button {
+  width: 100%;
+  background: rebeccapurple;
+  color: white;
+  padding: 0.5rem;
+  border: 0;
+  border-radius: 0.2rem;
+}
