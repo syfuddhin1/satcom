@@ -8,8 +8,8 @@ const areaSchema = new Schema(
       unique: true,
       trim: true,
     },
-    zoneCode: {
-      type: String,
+    zone: {
+      type: Object,
       required: true,
       trim: true,
     },

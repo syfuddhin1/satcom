@@ -1,0 +1,13 @@
+import { userModel } from "@/models/user-model";
+import connectMongo from "@/services/mongo";
+
+export async function GET(request, { params }) {
+  const connect = await connectMongo();
+  const userData = await userModel.findById(params.id);
+  return new Response(JSON.stringify({ status: "success", userData }), {
+    status: 200,
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+}

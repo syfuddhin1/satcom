@@ -47,11 +47,6 @@ export default function SideBar() {
           icon: <FcList className="text-3xl" />,
           label: "Area",
         },
-        {
-          href: "/areas/add",
-          icon: <FcList className="text-3xl" />,
-          label: "Add",
-        },
       ],
     },
     {
@@ -65,14 +60,9 @@ export default function SideBar() {
           label: "List",
         },
         {
-          href: "/users/officers",
+          href: "/managers",
           icon: <FcList className="text-3xl" />,
-          label: "Officers",
-        },
-        {
-          href: "/users/add",
-          icon: <FcList className="text-3xl" />,
-          label: "Add",
+          label: "Managers",
         },
       ],
     },
@@ -196,7 +186,7 @@ export default function SideBar() {
                 <AccordionContent
                   key={href}
                   className={`flex items-center gap-4 p-2 pl-10 w-full mt-2 duration-500 font-[600] text-md rounded ${
-                    pathname === href.toLowerCase()
+                    pathname.includes(href)
                       ? "bg-[#9096ffa1] text-white"
                       : "hover:bg-[#9096ff] hover:text-white"
                   }`}

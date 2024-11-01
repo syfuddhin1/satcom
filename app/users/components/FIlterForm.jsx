@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 
 export default function FilterForm({ title }) {
@@ -42,9 +43,12 @@ export default function FilterForm({ title }) {
           />
         </div>
         <div>
-          <button className="p-2 px-4 border border-black rounded bg-indigo-400 text-white">
+          <Link
+            href="/users/add"
+            className="p-2 px-4 border border-black rounded bg-indigo-400 text-white"
+          >
             Add New User
-          </button>
+          </Link>
         </div>
       </div>
     </div>

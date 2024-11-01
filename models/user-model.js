@@ -2,38 +2,71 @@ import mongoose, { Schema } from "mongoose";
 
 const userSchema = new Schema(
   {
-    name: {
+    zone: {
+      type: Object,
       required: true,
+      trim: true,
+    },
+    area: {
+      type: Object,
+      required: true,
+      trim: true,
+    },
+    memberCode: {
       type: String,
+      required: true,
+      unique: true,
+      trim: true,
+    },
+    name: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    mobile: {
+      type: String,
+      required: true,
+      unique: true,
+      trim: true,
     },
     email: {
+      type: String,
       required: true,
+      unique: true,
+      lowercase: true,
+      trim: true,
+    },
+    nidNo: {
+      type: String,
+      required: true,
+      unique: true,
+      trim: true,
+    },
+    address: {
+      type: String,
+      trim: true,
+    },
+    mapLocation: {
+      type: String,
+      trim: true,
+    },
+    username: {
       type: String,
       unique: true,
+      trim: true,
     },
     password: {
-      required: true,
       type: String,
     },
-    image: {
-      required: false,
+    status: {
       type: String,
-    },
-    emailVerified: {
-      required: false,
-      type: Boolean,
+      enum: ["Active", "Inactive"],
+      default: "Active",
     },
     role: {
-      required: false,
       type: String,
-    },
-    code: {
-      required: false,
-      type: String,
-    },
-    phone: {
-      required: false,
-      type: String,
+      enum: ["Admin", "User", "Member"],
+      default: "User",
     },
   },
   { timestamps: true }
