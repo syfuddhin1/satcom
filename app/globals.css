@@ -2,21 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
-  color: var(--foreground);
-  background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
 
@@ -26,38 +12,146 @@ body {
   }
 }
 
-form {
-  width: 30rem;
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    --accent: 250, 100%, 55%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+    --primary: 240 5.9% 10%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 240 10% 3.9%;
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+    --radius: 0.5rem;
+  }
+  .dark {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    --accent: 250, 100%, 55%;
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 240 5.9% 10%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 240 4.9% 83.9%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+  }
+}
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+.octagon {
+  clip-path: polygon(
+    46.1731656763% 0.7612046749%,
+    47.411809549% 0.3407417371%,
+    48.6947380778% 0.0855513863%,
+    50% 0,
+    51.3052619222% 0.0855513863%,
+    52.588190451% 0.3407417371%,
+    53.8268343237% 0.7612046749%,
+    82.1111055711% 12.4769334274%,
+    83.2842712475% 13.0554747147%,
+    84.3718855375% 13.7821953496%,
+    85.3553390593% 14.6446609407%,
+    86.2178046504% 15.6281144625%,
+    86.9445252853% 16.7157287525%,
+    87.5230665726% 17.8888944289%,
+    99.2387953251% 46.1731656763%,
+    99.6592582629% 47.411809549%,
+    99.9144486137% 48.6947380778%,
+    100% 50%,
+    99.9144486137% 51.3052619222%,
+    99.6592582629% 52.588190451%,
+    99.2387953251% 53.8268343237%,
+    87.5230665726% 82.1111055711%,
+    86.9445252853% 83.2842712475%,
+    86.2178046504% 84.3718855375%,
+    85.3553390593% 85.3553390593%,
+    84.3718855375% 86.2178046504%,
+    83.2842712475% 86.9445252853%,
+    82.1111055711% 87.5230665726%,
+    53.8268343237% 99.2387953251%,
+    52.588190451% 99.6592582629%,
+    51.3052619222% 99.9144486137%,
+    50% 100%,
+    48.6947380778% 99.9144486137%,
+    47.411809549% 99.6592582629%,
+    46.1731656763% 99.2387953251%,
+    17.8888944289% 87.5230665726%,
+    16.7157287525% 86.9445252853%,
+    15.6281144625% 86.2178046504%,
+    14.6446609407% 85.3553390593%,
+    13.7821953496% 84.3718855375%,
+    13.0554747147% 83.2842712475%,
+    12.4769334274% 82.1111055711%,
+    0.7612046749% 53.8268343237%,
+    0.3407417371% 52.588190451%,
+    0.0855513863% 51.3052619222%,
+    0 50%,
+    0.0855513863% 48.6947380778%,
+    0.3407417371% 47.411809549%,
+    0.7612046749% 46.1731656763%,
+    12.4769334274% 17.8888944289%,
+    13.0554747147% 16.7157287525%,
+    13.7821953496% 15.6281144625%,
+    14.6446609407% 14.6446609407%,
+    15.6281144625% 13.7821953496%,
+    16.7157287525% 13.0554747147%,
+    17.8888944289% 12.4769334274%
+  );
+}
+.userform {
   padding: 2rem;
-  margin: 0 auto;
-  border: plum 1px solid;
-  border-radius: 1rem;
-  background: rgba(255, 255, 255, 0.2); /* Transparent white */
-  border-radius: 15px;
-  backdrop-filter: blur(10px); /* Creates the glass effect */
-  -webkit-backdrop-filter: blur(10px); /* For Safari */
-  box-shadow: 4px 4px 10px rgba(255, 255, 255, 0.5),
-    /* Inner soft white shadow */ -4px -4px 15px rgba(0, 0, 0, 0.2); /* Outer soft dark shadow */
-  border: 1px solid rgba(255, 255, 255, 0.18); /* Optional border */
+  border-radius: 0.5rem;
+  border: 1px solid #ccc;
+  box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.1);
 }
-form label {
-  display: inline-flex;
+.userform label {
+  display: flex;
   justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
-  align-items: center;
 }
-form input {
-  border: 1px saddlebrown solid;
-  width: 15rem;
-  height: 2rem;
-  padding-left: 1rem;
-}
-form button {
-  width: 100%;
-  background: rebeccapurple;
-  color: white;
+.userform label input,
+.userform label select {
+  border-radius: 0.5rem;
   padding: 0.5rem;
-  border: 0;
-  border-radius: 0.2rem;
+  border: 1px solid #ccc;
+  width: 70%;
 }

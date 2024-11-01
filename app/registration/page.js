@@ -1,40 +1,42 @@
+"use client";
 import { addUser } from "@/lib";
 import React from "react";
 
 export default function RegistrationPage() {
+  const [formData, setFormData] = React.useState({});
+  const handleSubmitRegistration = async (event) => {
+    event.preventDefault();
+    const response = await addUser(formData);
+    console.log(response);
+  };
+
+  const handleChange = (event) => {
+    setFormData({ ...formData, [event.target.name]: event.target.value });
+  };
   return (
-    <form
-      className="flex flex-col gap-4"
-      action={async (formData) => {
-        "use server";
-        console.log("formData", formData);
-        // TODO: implement registration logic
-        await addUser(formData);
-      }}
-    >
+    <form className="flex flex-col gap-4" onSubmit={handleSubmitRegistration}>
       <label>
         Email
-        <input name="email" type="email" />
+        <input name="email" type="email" onChange={handleChange} />
       </label>
 
       <label>
         Name
-        <input name="name" type="text" />
+        <input name="name" type="text" onChange={handleChange} />
       </label>
       <label>
         Code
-        <input name="code" type="text" />
+        <input name="code" type="text" onChange={handleChange} />
       </label>
       <label>
         Password
-        <input name="password" type="password" />
+        <input name="password" type="password" onChange={handleChange} />
       </label>
       <label>
         Confirm Password
-        <input name="confirmPassword" type="password" />
+        <input name="confirmPassword" type="password" onChange={handleChange} />
       </label>
-
-      <button>Register</button>
+      <button type="submit">Register</button>
     </form>
   );
 }
