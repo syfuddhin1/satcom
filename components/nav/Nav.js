@@ -3,12 +3,15 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   FcBriefcase,
+  FcClapperboard,
   FcCurrencyExchange,
+  FcGenericSortingAsc,
   FcHome,
   FcList,
   FcManager,
   FcMindMap,
   FcMoneyTransfer,
+  FcOrgUnit,
   FcSerialTasks,
   FcSettings,
 } from "react-icons/fc";
@@ -46,6 +49,23 @@ export default function SideBar() {
           href: "/areas/areas",
           icon: <FcList className="text-3xl" />,
           label: "Area",
+        },
+      ],
+    },
+    {
+      href: "/packages",
+      icon: <FcOrgUnit className="text-3xl" />,
+      label: "Packages",
+      subMenu: [
+        {
+          href: "/packages/internet",
+          icon: <FcGenericSortingAsc className="text-3xl -rotate-90" />,
+          label: "Internet Service",
+        },
+        {
+          href: "/packages/cabletv",
+          icon: <FcClapperboard className="text-3xl" />,
+          label: "Cable TV Network",
         },
       ],
     },

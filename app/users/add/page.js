@@ -17,13 +17,16 @@ export default function AddUserPage() {
   const router = useRouter();
   const [addUser, { isLoading, isSuccess, isError, error }] =
     useAddUserMutation();
+
   useEffect(() => {
-    const newId = getNewUserId(formData.area, user?.userData);
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      memberCode: newId,
-    }));
-  }, [formData.area, user]);
+    if (area?.areaList !== undefined) {
+      const newId = getNewUserId(formData.area, user?.userData);
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        memberCode: newId,
+      }));
+    }
+  }, [formData.area, user, area?.areaList]);
 
   const handleSubmitRegistration = async (event) => {
     event.preventDefault();

@@ -45,20 +45,36 @@ export const getNewUserId = (areacode, userdata) => {
     newId = 1; // Start IDs from 1 if there's no data
   } else {
     // Get the highest existing ID in the array
-    const filteredData = userdata?.filter(
-      (item) => item?.area?.code === areacode
-    );
+    const filteredData = userdata?.filter((item) => item?.area == areacode);
 
     if (filteredData.length === 0) {
       newId = 1;
     } else {
       const lastId = filteredData.reduce(
-        (maxId, item) => Math.max(maxId, Number(item.code.slice(-3)) || 0),
+        (maxId, item) =>
+          Math.max(maxId, Number(item?.memberCode?.slice(-3) || 0)),
         0
       );
+
       newId = lastId + 1;
     }
   }
 
   return areacode + newId.toString().padStart(3, "0");
 };
+
+export async function getZoneName(code) {
+  const zoneData = await fetch(`http://localhost:3000/api/areas/zone`).then(
+    (res) => res.json()
+  );
+  const zone = zoneData?.zoneList?.find((zone) => zone.code === code);
+  return zone?.name;
+}
+
+export async function getAreaName(code) {
+  const areaData = await fetch(`http://localhost:3000/api/areas/areas`).then(
+    (res) => res.json()
+  );
+  const area = areaData?.areaList?.find((area) => area.code === code);
+  return area?.name;
+}

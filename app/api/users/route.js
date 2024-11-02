@@ -13,17 +13,48 @@ export async function GET() {
 }
 
 export async function POST(request) {
-  const connect = await connectMongo();
+  try {
+    const connect = await connectMongo();
 
-  //   cheack if user exists
-  const data = await request.json();
+    const data = await request.json();
 
-  const userData = await userModel.create(data);
+    if (!data) {
+      return new Response(
+        JSON.stringify({
+          status: "error",
+          message: "Request body is empty",
+        }),
+        {
+          status: 400,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+    }
 
-  return new Response(JSON.stringify({ status: "success", userData }), {
-    status: 200,
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+    const userData = await userModel.create(data);
+
+    return new Response(JSON.stringify({ status: "success", userData }), {
+      status: 201,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  } catch (error) {
+    console.error("Error creating new user:", error);
+    return new Response(
+      JSON.stringify({
+        status: "error",
+        message: "Failed to create new user",
+        error,
+      }),
+      {
+        status: 500,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+  }
 }
