@@ -165,8 +165,8 @@ export default function SideBar() {
   return (
     <aside
       className={`${
-        menu ? "w-24" : "w-96"
-      } duration-700 border-r px-4 overflow-hidden`}
+        menu ? "w-24 px-2" : "w-96 px-4"
+      } duration-700 border-r  overflow-hidden`}
     >
       <h1 className="text-2xl h-24 font-[800] uppercase flex items-center justify-center gap-5 my-10 border-b pb-4">
         <FcSerialTasks className="text-5xl" />

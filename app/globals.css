@@ -16,7 +16,6 @@ body {
   :root {
     --background: 0 0% 100%;
     --foreground: 240 10% 3.9%;
-    --accent: 250, 100%, 55%;
     --card: 0 0% 100%;
     --card-foreground: 240 10% 3.9%;
     --popover: 0 0% 100%;
@@ -42,9 +41,8 @@ body {
     --radius: 0.5rem;
   }
   .dark {
-    --background: 240 10% 3.9%;
+    --background: 219.3 27.9% 16.9%;
     --foreground: 0 0% 98%;
-    --accent: 250, 100%, 55%;
     --card: 240 10% 3.9%;
     --card-foreground: 0 0% 98%;
     --popover: 240 10% 3.9%;
@@ -61,6 +59,7 @@ body {
     --destructive-foreground: 0 0% 98%;
     --border: 240 3.7% 15.9%;
     --input: 240 3.7% 15.9%;
+    --input: 219.3 27.9% 16.9%;
     --ring: 240 4.9% 83.9%;
     --chart-1: 220 70% 50%;
     --chart-2: 160 60% 45%;
@@ -75,6 +74,23 @@ body {
   }
   body {
     @apply bg-background text-foreground;
+  }
+  select {
+    @apply bg-input text-foreground;
+  }
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="number"],
+  input[type="tel"],
+  input[type="url"],
+  input[type="date"],
+  input[type="time"],
+  input[type="datetime-local"],
+  input[type="month"],
+  input[type="week"],
+  input[type="search"] {
+    @apply bg-input text-foreground;
   }
 }
 

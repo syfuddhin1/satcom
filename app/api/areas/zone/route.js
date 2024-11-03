@@ -7,7 +7,6 @@ export async function GET(request) {
   await connectMongo();
   try {
     const zoneList = await zoneModel.find(); // Use .find() to retrieve all documents
-    console.log("called zoneList", zoneList?.length);
 
     return new Response(
       JSON.stringify({ status: "success", zoneList }), // Convert data to JSON string

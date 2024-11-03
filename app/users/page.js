@@ -10,12 +10,12 @@ export default async function UserPage() {
   const { userData } = data;
 
   return (
-    <div className="bg-white p-4 rounded-lg shadow-lg grid gap-4 grid-rows-auto ">
+    <div className=" p-4 rounded-lg shadow-lg grid gap-4 grid-rows-auto ">
       <FilterForm title={"Users"} />
       <div className="overflow-x-auto flex">
         <table className="table-auto w-full">
           <thead>
-            <tr className="bg-gray-100">
+            <tr className="bg-gray-100 dark:bg-gray-100/10">
               <th className="px-4 py-2">#</th>
               <th className="px-4 py-2">Name</th>
               <th className="px-4 py-2">Code</th>

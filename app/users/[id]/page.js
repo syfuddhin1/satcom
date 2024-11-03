@@ -3,8 +3,12 @@ import React from "react";
 import DemoImage from "./blank.png";
 import { getAreaName, getZoneName } from "@/utils";
 import MemberInfo from "../components/MemberInfo";
+import PackageInfo from "../components/PackegeInfo";
+import TransactionInfo from "../components/TransactionInfo";
 export default async function MemberInformation({ params: { id } }) {
-  const res = await fetch(`http://localhost:3000/api/users/${id}`);
+  const res = await fetch(`http://localhost:3000/api/users/${id}`, {
+    cache: "no-store",
+  });
   const zoneData = await fetch(`http://localhost:3000/api/areas/zone`).then(
     (res) => res.json()
   );
@@ -48,18 +52,10 @@ export default async function MemberInformation({ params: { id } }) {
           </div>
         </div>
       </div>
-      <div className="grid grid-cols-3 gap-5">
+      <div className="grid grid-cols-3 gap-5 w-full">
         <MemberInfo userData={userData} />
-        <div class="max-w-sm p-6 bg-white rounded-lg shadow-lg border border-gray-200 mt-10">
-          <h1 className="text-lg text-center border-b font-bold mb-2">
-            Package Info
-          </h1>
-        </div>
-        <div class="max-w-sm p-6 bg-white rounded-lg shadow-lg border border-gray-200 mt-10">
-          <h1 className="text-lg text-center border-b font-bold mb-2">
-            Last Transactions
-          </h1>
-        </div>
+        <PackageInfo userData={userData} />
+        <TransactionInfo userData={userData} />
       </div>
     </div>
   );

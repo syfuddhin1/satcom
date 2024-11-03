@@ -3,7 +3,7 @@ import React from "react";
 
 export default function FilterForm({ title }) {
   return (
-    <div className="relative flex justify-between gap-5 h-16 border bg-slate-100 items-center p-2 ">
+    <div className="relative flex justify-between gap-5 h-16 border bg-slate-100 dark:bg-slate-50/10 items-center p-2 ">
       <h1 className="text-2xl font-bold ">{title}</h1>
       <div className="flex gap-5 *:flex *:gap-4 *:items-center *:capitalize">
         <div className="">
@@ -11,7 +11,7 @@ export default function FilterForm({ title }) {
           <select
             id="filter"
             name="filter"
-            className="w-40 h-10 rounded-lg text-center"
+            className="w-40 h-10 rounded-lg text-center "
           >
             <option value="">All</option>
             <option value="1">1</option>
@@ -24,7 +24,7 @@ export default function FilterForm({ title }) {
           <select
             id="sort"
             name="sort"
-            className="w-40 h-10 rounded-lg text-center"
+            className="w-40 h-10 rounded-lg text-center "
           >
             <option value="">All</option>
             <option value="1">1</option>

@@ -1,5 +1,32 @@
 import mongoose, { Schema } from "mongoose";
 
+const packageSchema = new Schema({
+  billing_date: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  packageType: {
+    type: String,
+    required: true,
+    trim: true,
+    unique: true,
+  },
+  sCharge: {
+    type: Number,
+    required: true,
+  },
+  provider: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  package_bill: {
+    type: Number,
+    required: true,
+  },
+});
+
 const userSchema = new Schema(
   {
     zone: {
@@ -58,6 +85,14 @@ const userSchema = new Schema(
     password: {
       type: String,
     },
+    image: {
+      type: String,
+      trim: true,
+    },
+    packages: {
+      type: [packageSchema], // Array of package objects
+      default: [], // Default as an empty array
+    },
     status: {
       type: String,
       enum: ["Active", "Inactive"],
@@ -73,4 +108,4 @@ const userSchema = new Schema(
 );
 
 export const userModel =
-  mongoose.models.users ?? mongoose.model("users", userSchema);
+  mongoose.models.users || mongoose.model("users", userSchema);

@@ -20,11 +20,11 @@ export default function RootLayout({ children, modal }) {
     <html lang="en" className={poppins.className}>
       <body>
         <ReduxProvider>
-          <div className="flex h-screen w-[100vw] overflow-hidden">
+          <div className="flex h-screen w-[100vw] overflow-hidden ">
             <SideBar />
             <main className="w-full flex flex-col justify-between">
               <TopBar />
-              <div className="p-2 h-full">
+              <div className="p-2 h-full overflow-y-auto">
                 {children}
                 {modal}
               </div>

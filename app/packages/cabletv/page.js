@@ -1,52 +1,53 @@
 import React from "react";
+import InternetForm from "../_components/InternetForm";
+import ActionButton from "@/components/users/ActionButton";
+import CableForm from "../_components/CableForm";
 
-export default function CableTvPackagePage() {
+export default async function InternetPage() {
+  const res = await fetch(`http://localhost:3000/api/packages?provider=cable`, {
+    cache: "no-store",
+  });
+  const { packageData } = await res.json();
   return (
     <div>
-      <h1>Cable Tv Package </h1>
-      <form className="flex flex-col gap-2 shadow-md mx-auto w-1/2 p-4 *:flex *:gap-2 *:items-center *:justify-between">
-        <label>
-          <strong>Package Name:</strong>
-          <input
-            className="h-10 px-2 ring-1 rounded w-1/2"
-            type="text"
-            name="packageName"
-            placeholder="CableTv Package Name"
-          />
-        </label>
-        <label>
-          <strong>Package Description:</strong>
-          <textarea
-            className="ring-1 rounded w-1/2"
-            type="text"
-            name="packageDescription"
-            placeholder="CableTv Package Description"
-          />
-        </label>
-        <label>
-          <strong>Price:</strong>
-          <input
-            className="h-10 px-2 ring-1 rounded w-1/2"
-            type="text"
-            name="price"
-            placeholder="CableTv Package Price"
-          />
-        </label>
-        <label>
-          <strong>Number of Channels:</strong>
-          <input
-            className="h-10 px-2 ring-1 rounded w-1/2"
-            type="text"
-            name="numberOfChannels"
-            placeholder="CableTv Package Number of Channels"
-          />
-        </label>
-        <input
-          type="submit"
-          value="add"
-          className="bg-blue-500 text-white p-2 rounded w-36 cursor-pointer"
-        />
-      </form>
+      <CableForm />
+
+      <div className="overflow-x-auto flex mt-10">
+        <table className="table-auto w-full">
+          <caption className="text-center text-xl p-2 font-bold">
+            Cable Tv Packages
+          </caption>
+          <thead>
+            <tr className="bg-gray-100 dark:bg-gray-100/10">
+              <th className="px-4 py-2">#</th>
+              <th className="px-4 py-2">Name</th>
+              <th className="px-4 py-2">No of Channels</th>
+              <th className="px-4 py-2">Price</th>
+              <th className="px-4 py-2">Description</th>
+              <th className="px-4 py-2">Action</th>
+            </tr>
+          </thead>
+          <tbody className="text-center">
+            {packageData.map((pack, i) => (
+              <tr
+                key={pack.code}
+                className="even:bg-gray-100 even:dark:bg-gray-100/10"
+              >
+                <td className="px-4 py-2 border-t">{i + 1}</td>
+                <td className="px-4 py-2 border-t">{pack.name}</td>
+                <td className="px-4 py-2 border-t">{pack.speed}</td>
+                <td className="px-4 py-2 border-t">{pack.price}</td>
+                <td className="px-4 py-2 border-t">
+                  {pack.description || "-"}
+                </td>
+                <td className="px-4 py-2 border-t flex justify-center">
+                  <ActionButton user={pack} />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

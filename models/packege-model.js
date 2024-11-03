@@ -9,7 +9,6 @@ const internetPlanSchema = new Schema(
     },
     description: {
       type: String,
-      required: true,
       trim: true,
     },
     speed: {
@@ -19,6 +18,11 @@ const internetPlanSchema = new Schema(
     price: {
       type: Number,
       required: true,
+    },
+    provider: {
+      type: String,
+      required: true,
+      trim: true,
     },
   },
   { timestamps: true }
