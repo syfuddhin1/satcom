@@ -76,7 +76,7 @@ body {
     @apply bg-background text-foreground;
   }
   select {
-    @apply bg-input text-foreground;
+    @apply bg-input text-foreground h-10 rounded px-4;
   }
   input[type="text"],
   input[type="email"],
@@ -90,7 +90,7 @@ body {
   input[type="month"],
   input[type="week"],
   input[type="search"] {
-    @apply bg-input text-foreground;
+    @apply bg-input text-foreground h-10 rounded px-4;
   }
 }
 
@@ -170,4 +170,29 @@ body {
   padding: 0.5rem;
   border: 1px solid #ccc;
   width: 70%;
+}
+
+.animate-fade {
+  animation: fade-in 0.8s ease-out;
+}
+.animate-scale {
+  animation: scaleUp 0.5s ease-out;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleUp {
+  from {
+    transform: scale(0.9) translateY(-4.5rem);
+  }
+  to {
+    transform: scale(1) translateY(0);
+  }
 }

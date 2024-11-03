@@ -21,7 +21,9 @@ export default function AddZone() {
   };
   useEffect(() => {
     async function getData() {
-      const response = await fetch("/api/areas/zone");
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_APP_URI}/api/areas/zone`
+      );
       const data = await response.json();
       const newId = getNewId(data?.zoneList);
       setFormData((prevFormData) => ({
@@ -35,13 +37,16 @@ export default function AddZone() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const response = await fetch("/api/areas/zone", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    });
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_APP_URI}/api/areas/zone`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      }
+    );
 
     if (response.ok) {
       router.push("/areas/zone");

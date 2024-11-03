@@ -1,4 +1,5 @@
 import mongoose, { Schema } from "mongoose";
+import { packagesModel } from "./package-model";
 
 const packageSchema = new Schema({
   billing_date: {
@@ -7,10 +8,16 @@ const packageSchema = new Schema({
     trim: true,
   },
   packageType: {
-    type: String,
+    type: Schema.Types.ObjectId,
     required: true,
     trim: true,
     unique: true,
+    ref: packagesModel,
+  },
+  packageName: {
+    type: String,
+    required: true,
+    trim: true,
   },
   sCharge: {
     type: Number,

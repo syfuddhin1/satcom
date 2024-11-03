@@ -14,7 +14,7 @@ export default function InternetForm() {
     const description = formData.get("description");
     const provider = "internet";
     // Perform API call to save the plan
-    const res = await fetch("/api/packages", {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URI}/api/packages`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -29,7 +29,6 @@ export default function InternetForm() {
     });
     if (res.ok) {
       console.log("Plan saved successfully");
-      console.log(await res.json());
 
       // Redirect to the plans page or display a success message
       router.refresh();

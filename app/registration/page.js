@@ -7,7 +7,6 @@ export default function RegistrationPage() {
   const handleSubmitRegistration = async (event) => {
     event.preventDefault();
     const response = await addUser(formData);
-    console.log(response);
   };
 
   const handleChange = (event) => {

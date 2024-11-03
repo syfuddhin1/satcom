@@ -1,14 +1,15 @@
 "use client";
-import { useFetchPackagesQuery } from "@/store/silces/packegeApi";
+import { useFetchPackagesQuery } from "@/store/slices/packageApi";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { AiFillShopping, AiOutlineShopping } from "react-icons/ai";
 
 export default function BuyPackageForm({ userData }) {
   const [isActive, setIsActive] = useState(false);
   const [provider, setProvider] = useState("internet");
-  const [packageData, setPackageData] = useState(null);
+  const [packageData, setPackageData] = useState(0);
   const { data, isError, isSuccess } = useFetchPackagesQuery(provider);
-
+  const router = useRouter();
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsActive(false);
@@ -19,22 +20,37 @@ export default function BuyPackageForm({ userData }) {
     const sCharge = formData.get("SCharge");
     const billing_date = formData.get("billing_date");
     const package_bill = formData.get("package_bill");
-    console.log({ provider, sCharge, packageType, billing_date, package_bill });
-    // Perform API call to save the plan
-    const res = await fetch(`/api/users/${userData._id}/packages`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        provider,
-        sCharge,
-        packageType,
-        billing_date,
-        package_bill,
-      }),
+    console.log({
+      provider,
+      sCharge,
+      packageType,
+      billing_date,
+      package_bill,
+      packageName: packageData.name,
     });
-    console.log(await res.json());
+    // Perform API call to save the plan
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_APP_URI}/api/users/${userData._id}/packages`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          provider,
+          sCharge,
+          packageType,
+          billing_date,
+          package_bill,
+          packageName: packageData.name,
+        }),
+      }
+    );
+
+    if (res.ok) {
+      console.log("Plan saved successfully");
+      router.refresh();
+    }
   };
   return (
     <div className="">
@@ -50,7 +66,7 @@ export default function BuyPackageForm({ userData }) {
       )}
       {isActive && (
         <form
-          className="space-y-4 absolute z-50 backdrop-blur-xl rounded-lg shadow-lg border border-gray-200 p-4 w-full top-0 left-0 h-full"
+          className="space-y-2 PX-5 absolute z-50 backdrop-blur-xl rounded-lg shadow-lg border border-gray-200 p-4 w-full top-0 left-0 h-full"
           onSubmit={handleSubmit}
         >
           <h1 className="text-lg text-center border-b font-bold my-2">
@@ -90,7 +106,7 @@ export default function BuyPackageForm({ userData }) {
                 const packageAmount = data.packageData.find(
                   (pack) => pack._id === packageId
                 );
-                setPackageData(packageAmount.price);
+                setPackageData(packageAmount);
               }}
               className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100"
             >
@@ -147,7 +163,7 @@ export default function BuyPackageForm({ userData }) {
               type="number"
               name="package_bill"
               id="package_bill"
-              value={packageData}
+              value={packageData.price}
               className="w-full px-4 py-1.5 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100"
             />
           </div>

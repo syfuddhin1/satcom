@@ -1,4 +1,4 @@
-import { packagesModel } from "@/models/packege-model";
+import { packagesModel } from "@/models/package-model";
 import connectMongo from "@/services/mongo";
 
 export async function GET(request) {

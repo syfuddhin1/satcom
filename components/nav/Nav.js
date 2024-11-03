@@ -22,7 +22,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { toggleMenu } from "@/store/silces/menuSlice";
+import { toggleMenu } from "@/store/slices/menuSlice";
 import { useDispatch } from "react-redux";
 
 export default function SideBar() {
@@ -96,11 +96,6 @@ export default function SideBar() {
           icon: <FcList className="text-3xl" />,
           label: "List",
         },
-        {
-          href: "/transactions/add",
-          icon: <FcList className="text-3xl" />,
-          label: "Add",
-        },
       ],
     },
     {
@@ -166,7 +161,7 @@ export default function SideBar() {
     <aside
       className={`${
         menu ? "w-24 px-2" : "w-96 px-4"
-      } duration-700 border-r  overflow-hidden`}
+      }  border-r  overflow-hidden`}
     >
       <h1 className="text-2xl h-24 font-[800] uppercase flex items-center justify-center gap-5 my-10 border-b pb-4">
         <FcSerialTasks className="text-5xl" />
@@ -185,7 +180,7 @@ export default function SideBar() {
           {navItems.map(({ href, icon, label, subMenu }) => (
             <AccordionItem value={href} key={href}>
               <AccordionTrigger
-                className={`flex items-center gap-4 px-4 w-full py-2  duration-500 font-[600] text-sm rounded ${
+                className={`flex items-center gap-4 px-4 w-full py-2 transition-all duration-500 font-[600] text-sm rounded ${
                   pathname.includes(href)
                     ? "bg-[#9096ff] text-white"
                     : "hover:bg-[#9096ff] hover:text-white"

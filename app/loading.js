@@ -3,7 +3,7 @@ import React from "react";
 export default function loading() {
   return (
     <div className="w-full h-full bg-black/60 backdrop-blur-lg flex justify-center items-center absolute left-0 top-0 z-50">
-      <span class="loader"></span>
+      <span className="loader"></span>
       <style>{`.loader {
   width: 48px;
   height: 48px;

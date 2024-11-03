@@ -5,7 +5,7 @@ import { IoLogOut } from "react-icons/io5";
 
 export default function DropMenu() {
   return (
-    <div className="absolute -z-50 peer-focus:z-50 bg-white peer-focus:opacity-100 opacity-0 right-0 duration-700 peer-focus:top-14  top-20 shadow-lg w-80 h-80 p-8 flex flex-col text-sm  rounded gap-5">
+    <div className="absolute -z-50 peer-focus:z-50 bg-background peer-focus:opacity-100 opacity-0 right-0 duration-700 peer-focus:top-14  top-20 shadow-lg w-80 h-80 p-8 flex flex-col text-sm  rounded gap-5">
       <div className=" flex gap-2 items-center border-b py-5">
         <Image
           src="/assets/media/avatars/150-1.jpg"

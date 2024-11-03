@@ -2,7 +2,7 @@ import React from "react";
 
 export default async function PackageCard({ packageData }) {
   const res = await fetch(
-    `http://localhost:3000/api/packages/${packageData.packageType}`
+    `${process.env.NEXT_PUBLIC_APP_URI}/api/packages/${packageData.packageType}`
   );
   const { packDetails } = await res.json();
 

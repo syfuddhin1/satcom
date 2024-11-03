@@ -1,9 +1,12 @@
 import Link from "next/link";
 
 export default async function AreaPage() {
-  const response = await fetch("http://localhost:3000/api/areas/areas", {
-    cache: "no-store",
-  });
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_APP_URI}/api/areas/areas`,
+    {
+      cache: "no-store",
+    }
+  );
   const data = await response.json();
 
   return (

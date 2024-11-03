@@ -2,7 +2,7 @@ import React from "react";
 
 export default function CurvedSvgTop() {
   return (
-    <div class="landing-curve landing-dark-color">
+    <div className="landing-curve landing-dark-color">
       <svg
         viewBox="15 -1 1470 48"
         fill="none"
@@ -19,7 +19,7 @@ export default function CurvedSvgTop() {
 
 export function CurvedSvgBottom(svg) {
   return (
-    <div class="landing-curve landing-dark-color">
+    <div className="landing-curve landing-dark-color">
       <svg
         viewBox="15 12 1470 48"
         fill="none"

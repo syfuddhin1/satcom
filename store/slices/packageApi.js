@@ -14,7 +14,10 @@ export const packagesApi = apiSlice.injectEndpoints({
         }
       },
     }),
+    fetchPackageById: builder.query({
+      query: (id) => `/packages/${id}`,
+    }),
   }),
 });
 
-export const { useFetchPackagesQuery } = packagesApi;
+export const { useFetchPackagesQuery, useFetchPackageByIdQuery } = packagesApi;

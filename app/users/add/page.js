@@ -1,30 +1,48 @@
 "use client";
-import { useFetchAreaByIdQuery } from "@/store/silces/areaApi";
+import { useFetchAreaByIdQuery } from "@/store/slices/areaApi";
 import {
   useAddUserMutation,
   useFetchUserByAreaQuery,
-} from "@/store/silces/userApi";
-import { useGetZonesQuery } from "@/store/silces/zoneApi";
+} from "@/store/slices/userApi";
+import { useGetZonesQuery } from "@/store/slices/zoneApi";
 import { getNewUserId } from "@/utils";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
 
 export default function AddUserPage() {
-  const [formData, setFormData] = React.useState({});
+  const [formData, setFormData] = React.useState({
+    zone: "",
+    area: "",
+    memberCode: "",
+    name: "",
+    mobile: "",
+    email: "",
+    nidNo: "",
+    address: "",
+    mapLocation: "",
+    username: "",
+    password: "",
+    status: "active",
+    role: "user",
+  });
   const { data: zone } = useGetZonesQuery();
   const { data: area } = useFetchAreaByIdQuery(formData?.zone);
   const { data: user } = useFetchUserByAreaQuery(formData?.area);
   const router = useRouter();
   const [addUser, { isLoading, isSuccess, isError, error }] =
     useAddUserMutation();
-
+  console.log(formData);
   useEffect(() => {
+    console.log(area?.areaList);
     if (area?.areaList !== undefined) {
       const newId = getNewUserId(formData.area, user?.userData);
-      setFormData((prevFormData) => ({
-        ...prevFormData,
-        memberCode: newId,
-      }));
+      if (formData.area !== "") {
+        setFormData((prevFormData) => ({
+          ...prevFormData,
+          memberCode: newId,
+        }));
+      }
     }
   }, [formData.area, user, area?.areaList]);
 
@@ -55,6 +73,7 @@ export default function AddUserPage() {
           required
           onChange={handleChange}
           className="capitalize"
+          value={formData?.zone}
         >
           <option value="">Select Zone</option>
           {zone &&
@@ -74,6 +93,7 @@ export default function AddUserPage() {
           required
           onChange={handleChange}
           className="capitalize"
+          value={formData?.area}
         >
           <option value="">Select Area</option>
           {area &&
@@ -143,7 +163,7 @@ export default function AddUserPage() {
           type="text"
           id="nidNo"
           name="nidNo"
-          value={formData?.nid}
+          value={formData?.nidNo}
           required
           onChange={handleChange}
         />
@@ -163,18 +183,18 @@ export default function AddUserPage() {
       </label>
 
       {/* <!-- Map Location --> */}
-      <label for="map-location">
+      <label for="mapLocation">
         Map Location:{" "}
         <input
           type="text"
-          id="map-location"
-          name="map-location"
+          id="mapLocation"
+          name="mapLocation"
           value={formData?.mapLocation}
           onChange={handleChange}
         />
       </label>
       {/* username */}
-      <label for="username">
+      {/* <label for="username">
         Username:{" "}
         <input
           type="text"
@@ -184,9 +204,9 @@ export default function AddUserPage() {
           required
           onChange={handleChange}
         />
-      </label>
+      </label> */}
       {/* password */}
-      <label for="password">
+      {/* <label for="password">
         Password:{" "}
         <input
           type="password"
@@ -195,7 +215,7 @@ export default function AddUserPage() {
           value={formData?.password}
           onChange={handleChange}
         />
-      </label>
+      </label> */}
       {/* <!-- Status --> */}
       <label for="status">
         Status:{" "}
@@ -241,10 +261,33 @@ export default function AddUserPage() {
           Submit
         </button>{" "}
         <button
-          type="submit"
+          type="button"
           className="bg-violet-400 text-white text-center h-10 rounded-lg w-48"
+          onClick={() =>
+            setFormData({
+              zone: "",
+              area: "",
+              memberCode: "",
+              name: "",
+              mobile: "",
+              email: "",
+              nidNo: "",
+              address: "",
+              mapLocation: "",
+              username: "",
+              password: "",
+              status: "active",
+              role: "user",
+            })
+          }
         >
           Reset
+        </button>
+        <button
+          type="button"
+          className="bg-red-400 text-white text-center h-10 rounded-lg w-48"
+        >
+          <Link href="/users">Cancel</Link>
         </button>
       </div>
     </form>

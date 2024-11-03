@@ -1,17 +1,13 @@
-import ActionButton from "@/components/users/ActionButton";
-import React from "react";
-import FilterForm from "./components/FilterForm";
+import FilterForm from "./FilterForm";
 
-export default async function UserPage() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URI}/api/users`, {
-    cache: "no-store",
-  });
-  const data = await res.json();
-  const { userData } = data;
-
+export default function TransactionsPage() {
   return (
-    <div className=" p-4 rounded-lg shadow-lg grid gap-4 grid-rows-auto ">
-      <FilterForm title={"Users"} />
+    <div className="relative h-full">
+      <div className="flex justify-center gap-5 h-16 border bg-slate-100 dark:bg-slate-50/10 items-center p-2 ">
+        <h1 className="text-2xl font-bold">TransactionsPage</h1>
+      </div>
+      <FilterForm />
+      {/* Your transaction table and pagination components go here */}
       <div className="overflow-x-auto flex">
         <table className="table-auto w-full">
           <thead>
@@ -27,7 +23,7 @@ export default async function UserPage() {
             </tr>
           </thead>
           <tbody className="text-center">
-            {userData.map((user, i) => (
+            {/* {userData.map((user, i) => (
               <tr key={user.code}>
                 <td className="px-4 py-2 border-t">{i + 1}</td>
                 <td className="px-4 py-2 border-t">{user.name}</td>
@@ -40,11 +36,10 @@ export default async function UserPage() {
                   <ActionButton user={user} />
                 </td>
               </tr>
-            ))}
+            ))} */}
           </tbody>
         </table>
       </div>
-      <div className="pagination">pagination</div>
     </div>
   );
 }

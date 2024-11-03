@@ -4,7 +4,6 @@ import connectMongo from "@/services/mongo";
 export async function GET(request, { params }) {
   const connect = await connectMongo();
   const userData = await userModel.findById(params.id);
-  console.log(userData);
   return new Response(JSON.stringify({ status: "success", userData }), {
     status: 200,
     headers: {

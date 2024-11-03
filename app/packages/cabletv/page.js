@@ -4,9 +4,12 @@ import ActionButton from "@/components/users/ActionButton";
 import CableForm from "../_components/CableForm";
 
 export default async function InternetPage() {
-  const res = await fetch(`http://localhost:3000/api/packages?provider=cable`, {
-    cache: "no-store",
-  });
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_APP_URI}/api/packages?provider=cable`,
+    {
+      cache: "no-store",
+    }
+  );
   const { packageData } = await res.json();
   return (
     <div>

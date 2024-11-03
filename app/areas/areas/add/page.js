@@ -23,7 +23,9 @@ export default function AddZone() {
 
   useEffect(() => {
     async function getData() {
-      const response = await fetch("/api/areas/zone");
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_APP_URI}/api/areas/zone`
+      );
       const data = await response.json();
       setZoneList(data?.zoneList);
     }
@@ -32,7 +34,9 @@ export default function AddZone() {
   const handleZoneChange = async (e) => {
     e.preventDefault();
     const zone = zoneList.find((zone) => zone.code === e.target.value);
-    const res = await fetch("/api/areas/areas");
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_APP_URI}/api/areas/areas`
+    );
     const data = await res.json();
     setFormData((prevFormData) => ({
       ...prevFormData,
@@ -43,14 +47,16 @@ export default function AddZone() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const response = await fetch("/api/areas/areas", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    });
-    console.log(response);
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_APP_URI}/api/areas/areas`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      }
+    );
     if (response.ok) {
       router.push("/areas/areas");
       router.refresh();

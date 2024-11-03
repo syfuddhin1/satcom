@@ -64,17 +64,17 @@ export const getNewUserId = (areacode, userdata) => {
 };
 
 export async function getZoneName(code) {
-  const zoneData = await fetch(`http://localhost:3000/api/areas/zone`).then(
-    (res) => res.json()
-  );
+  const zoneData = await fetch(
+    `${process.env.NEXT_PUBLIC_APP_URI}/api/areas/zone`
+  ).then((res) => res.json());
   const zone = zoneData?.zoneList?.find((zone) => zone.code === code);
   return zone?.name;
 }
 
 export async function getAreaName(code) {
-  const areaData = await fetch(`http://localhost:3000/api/areas/areas`).then(
-    (res) => res.json()
-  );
+  const areaData = await fetch(
+    `${process.env.NEXT_PUBLIC_APP_URI}/api/areas/areas`
+  ).then((res) => res.json());
   const area = areaData?.areaList?.find((area) => area.code === code);
   return area?.name;
 }

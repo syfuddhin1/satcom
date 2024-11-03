@@ -3,18 +3,21 @@ import React from "react";
 import DemoImage from "./blank.png";
 import { getAreaName, getZoneName } from "@/utils";
 import MemberInfo from "../components/MemberInfo";
-import PackageInfo from "../components/PackegeInfo";
+import PackageInfo from "../components/PackageInfo";
 import TransactionInfo from "../components/TransactionInfo";
 export default async function MemberInformation({ params: { id } }) {
-  const res = await fetch(`http://localhost:3000/api/users/${id}`, {
-    cache: "no-store",
-  });
-  const zoneData = await fetch(`http://localhost:3000/api/areas/zone`).then(
-    (res) => res.json()
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_APP_URI}/api/users/${id}`,
+    {
+      cache: "no-store",
+    }
   );
-  const areaData = await fetch(`http://localhost:3000/api/areas/areas`).then(
-    (res) => res.json()
-  );
+  const zoneData = await fetch(
+    `${process.env.NEXT_PUBLIC_APP_URI}/api/areas/zone`
+  ).then((res) => res.json());
+  const areaData = await fetch(
+    `${process.env.NEXT_PUBLIC_APP_URI}/api/areas/areas`
+  ).then((res) => res.json());
   //   console.log(zoneData);
   const { userData } = await res.json();
   return (

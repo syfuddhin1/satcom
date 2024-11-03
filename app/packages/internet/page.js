@@ -4,7 +4,7 @@ import ActionButton from "@/components/users/ActionButton";
 
 export default async function InternetPage() {
   const res = await fetch(
-    `http://localhost:3000/api/packages?provider=internet`,
+    `${process.env.NEXT_PUBLIC_APP_URI}/api/packages?provider=internet`,
     {
       cache: "no-store",
     }

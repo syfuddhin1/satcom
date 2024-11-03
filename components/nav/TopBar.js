@@ -1,5 +1,5 @@
 "use client";
-import { toggleMenu } from "@/store/silces/menuSlice";
+import { toggleMenu } from "@/store/slices/menuSlice";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { CgBorderLeft, CgBorderRight } from "react-icons/cg";

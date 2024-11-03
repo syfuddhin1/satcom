@@ -1,9 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { apiSlice } from "./api/apiSlice";
-import productsSliceReducer from "./silces/productsSlice";
-import cartSliceReducer from "./silces/cartSlice";
-import filterSliceReducer from "./silces/filterSlice";
-import menuSliceReducer from "./silces/menuSlice";
+import productsSliceReducer from "./slices/productsSlice";
+import cartSliceReducer from "./slices/cartSlice";
+import filterSliceReducer from "./slices/filterSlice";
+import menuSliceReducer from "./slices/menuSlice";
 // configure store for redux
 
 export const store = configureStore({
