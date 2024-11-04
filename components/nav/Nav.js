@@ -99,19 +99,24 @@ export default function SideBar() {
       ],
     },
     {
-      href: "/accounts",
+      href: "/accounts/list",
       icon: <FcCurrencyExchange className="text-3xl" />,
       label: "Accounts",
       subMenu: [
         {
-          href: "/accounts",
+          href: "/accounts/voucher",
           icon: <FcList className="text-3xl" />,
-          label: "List",
+          label: "Add Voucher",
+        },
+        {
+          href: "/accounts/list",
+          icon: <FcList className="text-3xl" />,
+          label: "Voucher List",
         },
         {
           href: "/accounts/add",
           icon: <FcList className="text-3xl" />,
-          label: "Add",
+          label: "Add Account",
         },
       ],
     },

@@ -1,5 +1,16 @@
 import mongoose from "mongoose";
-
+const accountInfoSchema = new mongoose.Schema({
+  accountId: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  accountName: {
+    type: String,
+    required: true,
+  },
+  amount: { type: Number, required: true },
+});
 const accountSchema = new mongoose.Schema(
   {
     voucherId: {
@@ -9,20 +20,16 @@ const accountSchema = new mongoose.Schema(
       trim: true,
       index: true,
     },
-    accountId: {
-      type: String,
+    accountInfo: {
+      type: Array,
+      default: [accountInfoSchema],
       required: true,
       trim: true,
       index: true,
     },
-    accountName: {
-      type: String,
-      required: true,
-      trim: true,
-    },
     accountType: {
       type: String,
-      enum: ["credit", "debit"],
+      enum: ["credit", "debit", "journal"],
       required: true,
       lowercase: true,
     },
@@ -33,14 +40,12 @@ const accountSchema = new mongoose.Schema(
     },
     transactionId: {
       type: mongoose.Schema.Types.ObjectId,
-      required: true,
       ref: "Transaction",
       unique: true,
     },
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
-      required: true,
       index: true,
     },
     amount: {
@@ -68,6 +73,7 @@ const accountSchema = new mongoose.Schema(
 
 // Compound index for potential queries that combine accountId and userId
 accountSchema.index({ accountId: 1, userId: 1 });
+accountSchema.index({ createdAt: -1 });
 
 // Virtual for calculating the total balance for an account
 accountSchema.virtual("balance").get(function () {
