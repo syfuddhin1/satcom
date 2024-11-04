@@ -2,8 +2,10 @@ import { useForm, Controller } from "react-hook-form";
 import { AiOutlineClose } from "react-icons/ai";
 import SearchableDropdown from "./SearchableDropdown";
 import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 export default function TransactionForm({ setShowForm }) {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -27,7 +29,7 @@ export default function TransactionForm({ setShowForm }) {
   const packageIdValue = watch("packageId"); // Watch a single field
   useEffect(() => {
     const price = memberValue?.packages?.find(
-      (pack) => pack._id === packageIdValue
+      (pack) => pack.packageType === packageIdValue
     )?.package_bill;
     if (price) {
       setValue("amount", price);
@@ -52,6 +54,10 @@ export default function TransactionForm({ setShowForm }) {
       }
     );
     const newData = await res.json();
+    router.refresh();
+    if (res.statusCode === 200) {
+      setShowForm(false);
+    }
     console.log(newData);
   };
 
@@ -124,7 +130,7 @@ export default function TransactionForm({ setShowForm }) {
               >
                 <option value="">---Select---</option>
                 {memberValue?.packages?.map((pack) => (
-                  <option key={pack._id} value={pack._id}>
+                  <option key={pack._id} value={pack.packageType}>
                     {pack.packageName}
                   </option>
                 ))}
