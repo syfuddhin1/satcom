@@ -1,6 +1,6 @@
 "use client";
 
-import { deleteVoucher } from "@/lib/crud";
+import { deleteVoucher } from "@/lib/actions";
 import { AiFillDelete } from "react-icons/ai";
 
 export default function DeleteVoucher({ voucher }) {

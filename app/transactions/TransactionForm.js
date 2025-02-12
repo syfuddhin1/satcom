@@ -27,14 +27,17 @@ export default function TransactionForm({ setShowForm }) {
 
   const memberValue = watch("member"); // Watch a single field
   const packageIdValue = watch("packageId"); // Watch a single field
+
   useEffect(() => {
-    const price = memberValue?.packages?.find(
-      (pack) => pack.packageType === packageIdValue
-    )?.package_bill;
+    const price = memberValue?.userPackages?.find(
+      (pack) => pack.packageId === packageIdValue
+    )?.package.price;
     if (price) {
       setValue("amount", price);
     }
   }, [packageIdValue, memberValue, setValue]);
+
+
   const onSubmit = async (data) => {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_APP_URI}/api/transactions`,
@@ -46,7 +49,7 @@ export default function TransactionForm({ setShowForm }) {
         body: JSON.stringify({
           amount: data.amount,
           packageId: data.packageId,
-          userId: data.member._id,
+          userId: data.member.id,
           transactionDate: data.transactionDate,
           modeOfPayment: data.modeOfPayment,
           remarks: data.remarks,
@@ -54,8 +57,10 @@ export default function TransactionForm({ setShowForm }) {
       }
     );
     const newData = await res.json();
-    router.refresh();
-    if (res.statusCode === 200) {
+
+    if (res.status === 201) {
+      alert("Transaction successful");
+      router.refresh();
       setShowForm(false);
     }
     console.log(newData);
@@ -129,9 +134,9 @@ export default function TransactionForm({ setShowForm }) {
                 })}
               >
                 <option value="">---Select---</option>
-                {memberValue?.packages?.map((pack) => (
-                  <option key={pack._id} value={pack.packageType}>
-                    {pack.packageName}
+                {memberValue?.userPackages?.map((pack) => (
+                  <option key={pack.packageId} value={pack.packageId}>
+                    {pack.package.name}
                   </option>
                 ))}
               </select>

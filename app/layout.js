@@ -25,18 +25,18 @@ export default function RootLayout({ children, modal }) {
         <ReduxProvider>
           <div className="flex h-screen w-[100vw] overflow-hidden ">
             <SideBar />
-            <main className="w-full flex flex-col justify-between">
+            <main className="w-full flex flex-col justify-between ">
               <TopBar />
-              <div className="p-2 h-full overflow-y-auto">
+              <div className="p-2 h-full overflow-y-auto relative">
                 {children}
                 {modal}
               </div>
-              <footer className="text-right pr-10 border-t p-4 capitalize">
+              {/* <footer className="text-right pr-10 border-t p-4 capitalize">
                 made by
                 <Link href="https://github.com/soab42" target="_blank">
                   @soab42
                 </Link>
-              </footer>
+              </footer> */}
             </main>
           </div>
         </ReduxProvider>

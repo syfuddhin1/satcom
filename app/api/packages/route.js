@@ -1,12 +1,12 @@
-import { packagesModel } from "@/models/package-model";
-import connectMongo from "@/services/mongo";
+import prisma from "@/prisma/db";
 
 export async function GET(request) {
-  const connect = await connectMongo();
   const searchParams = request.nextUrl.searchParams;
   const provider = searchParams.get("provider");
 
-  const packageData = await packagesModel.find(provider ? { provider } : {});
+  const packageData = await prisma.package.findMany({
+    where: { provider },
+  });
   return new Response(JSON.stringify({ status: "success", packageData }), {
     status: 200,
     headers: {
@@ -17,8 +17,6 @@ export async function GET(request) {
 
 export async function POST(request) {
   try {
-    const connect = await connectMongo();
-
     const data = await request.json();
 
     if (!data) {
@@ -36,7 +34,9 @@ export async function POST(request) {
       );
     }
 
-    const packageData = await packagesModel.create(data);
+    const packageData = await prisma.package.create({
+      data: data,
+    });
 
     return new Response(JSON.stringify({ status: "success", packageData }), {
       status: 201,

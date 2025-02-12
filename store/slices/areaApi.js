@@ -14,10 +14,48 @@ export const areasApi = apiSlice.injectEndpoints({
         }
       },
     }),
-    fetchAreaById: builder.query({
-      query: (id) => `/areas/areas/${id}`,
+    fetchAreaByCode: builder.query({
+      query: (code) => `/areas/areas/${code}`,
+    }),
+    addArea: builder.mutation({
+      query: (areaData) => ({
+        url: "/areas/areas",
+        method: "POST",
+        body: areaData,
+      }),
+      invalidatesTags: ["Areas"],
+    }),
+    removeArea: builder.mutation({
+      query: (id) => ({
+        url: `/areas/areas/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Areas"],
+    }),
+    updateArea: builder.mutation({
+      query: ({ id, areaData }) => ({
+        url: `/areas/areas/${id}`,
+        method: "PUT",
+        body: areaData,
+      }),
+      invalidatesTags: ["Areas"],
+    }),
+    updateAreaStatus: builder.mutation({
+      query: ({ id, status }) => ({
+        url: `/areas/areas/${id}/status`,
+        method: "PUT",
+        body: { status },
+      }),
+      invalidatesTags: ["Areas"],
     }),
   }),
 });
 
-export const { useFetchAreasQuery, useFetchAreaByIdQuery } = areasApi;
+export const {
+  useFetchAreasQuery,
+  useFetchAreaByCodeQuery,
+  useAddAreaMutation,
+  useRemoveAreaMutation,
+  useUpdateAreaMutation,
+  useUpdateAreaStatusMutation,
+} = areasApi;

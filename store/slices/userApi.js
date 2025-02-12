@@ -13,6 +13,7 @@ export const usersApi = apiSlice.injectEndpoints({
     }),
     fetchUserById: builder.query({
       query: (id) => `/users/${id}`,
+      // providesTags: (result, error, id) => [{ type: "User", id }],
     }),
     fetchUserByArea: builder.query({
       query: (area) => `/users/area/${area}`,
@@ -25,6 +26,46 @@ export const usersApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["Users"],
     }),
+    addUserPackage: builder.mutation({
+      query: (packageData) => ({
+        url: `/users/${packageData.userId}/packages`,
+        method: "POST",
+        body: packageData,
+      }),
+      invalidatesTags: (result, error, { userId }) => [
+        { type: "User", id: userId },
+        "Users",
+      ],
+    }),
+    removeUserPackage: builder.mutation({
+      query: ({ userId, packageId }) => ({
+        url: `/users/${userId}/packages`,
+        body: { packageId },
+        method: "DELETE",
+      }),
+      invalidatesTags: (result, error, { userId }) => [
+        { type: "User", id: userId },
+        "Users",
+      ],
+    }),
+    updateUserStatus: builder.mutation({
+      query: ({ userId, status }) => ({
+        url: `/users/${userId}/status`,
+        method: "PATCH",
+        body: { status },
+      }),
+      invalidatesTags: (result, error, { userId }) => [
+        { type: "User", id: userId },
+        "Users",
+      ],
+    }),
+    removeUser: builder.mutation({
+      query: (id) => ({
+        url: `/users/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Users"],
+    }),
   }),
 });
 
@@ -33,4 +74,8 @@ export const {
   useFetchUsersQuery,
   useFetchUserByAreaQuery,
   useAddUserMutation,
+  useAddUserPackageMutation,
+  useRemoveUserPackageMutation,
+  useUpdateUserStatusMutation,
+  useRemoveUserMutation,
 } = usersApi;

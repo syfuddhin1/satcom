@@ -1,10 +1,7 @@
 import Image from "next/image";
-import React from "react";
+import DetailsNav from "./_components/DetailsNav";
 import DemoImage from "./blank.png";
-import { getAreaName, getZoneName } from "@/utils";
-import MemberInfo from "../components/MemberInfo";
-import PackageInfo from "../components/PackageInfo";
-import TransactionInfo from "../components/TransactionInfo";
+
 export default async function MemberInformation({ params: { id } }) {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_APP_URI}/api/users/${id}`,
@@ -12,17 +9,14 @@ export default async function MemberInformation({ params: { id } }) {
       cache: "no-store",
     }
   );
-  const zoneData = await fetch(
-    `${process.env.NEXT_PUBLIC_APP_URI}/api/areas/zone`
-  ).then((res) => res.json());
-  const areaData = await fetch(
-    `${process.env.NEXT_PUBLIC_APP_URI}/api/areas/areas`
-  ).then((res) => res.json());
-  //   console.log(zoneData);
+
   const { userData } = await res.json();
+
+  // console.log("userData", userData);
+
   return (
     <div>
-      <h1 className="text-2xl w-full text-center border-b p-2">
+      <h1 className="px-10 text-2xl w-full text-center border-b p-2">
         Member Information
       </h1>
       <div>
@@ -30,7 +24,7 @@ export default async function MemberInformation({ params: { id } }) {
           <Image
             width={200}
             height={200}
-            src={userData.avatar || DemoImage}
+            src={userData?.avatar || DemoImage}
             alt={userData.name}
             className="shadow-md rounded-md border-8 border-white"
           />
@@ -50,16 +44,14 @@ export default async function MemberInformation({ params: { id } }) {
             </p>
             <p className="text-lg capitalize">
               <span className="font-bold mr-2">Area:</span>
-              {getAreaName(userData.area)}, {getZoneName(userData.zone)}
+              {userData?.area.name}, {userData.zone.name}
             </p>
           </div>
         </div>
       </div>
-      <div className="grid grid-cols-3 gap-5 w-full">
-        <MemberInfo userData={userData} />
-        <PackageInfo userData={userData} />
-        <TransactionInfo userData={userData} />
-      </div>
+
+      {/* Navigation Buttons */}
+      <DetailsNav userData={userData} />
     </div>
   );
 }

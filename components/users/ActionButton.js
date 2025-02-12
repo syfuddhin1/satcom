@@ -38,7 +38,7 @@ export default function ActionButton({ user }) {
       </button>
       <Link
         className="border p-2 rounded-lg hover:text-blue-300 hover:bg-slate-200"
-        href={`/users/${user._id}`}
+        href={`/users/${user.id}`}
         title="Details"
       >
         <AiFillEye />

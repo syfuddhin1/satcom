@@ -2,11 +2,11 @@ import ActionButton from "@/components/users/ActionButton";
 import FilterForm from "../FilterForm";
 
 export default async function AccountsPage() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URI}/api/accounts`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URI}/api/accounts/vouchers`, {
     cache: "no-store",
   });
-  const { accountsData } = await res.json();
-
+  const { vouchers } = await res.json();
+  // console.log(vouchers);
   return (
     <div className="relative h-full">
       <div className="flex justify-center gap-5 h-16 border bg-slate-100 dark:bg-slate-50/10 items-center p-2 ">
@@ -28,21 +28,21 @@ export default async function AccountsPage() {
             </tr>
           </thead>
           <tbody className="text-center">
-            {accountsData.map((accounts, i) => (
+            {vouchers.map((voucher, i) => (
               <tr
-                key={accounts._id}
+                key={voucher._id}
                 className="even:bg-gray-100 even:dark:bg-gray-100/10"
               >
                 <td className="px-4 py-2 border-t">{i + 1}</td>
-                <td className="px-4 py-2 border-t">{accounts.voucherId}</td>
-                <td className="px-4 py-2 border-t">{accounts.accountType}</td>
-                <td className="px-4 py-2 border-t">{accounts.amount}</td>
+                <td className="px-4 py-2 border-t">{voucher.voucherId}</td>
+                <td className="px-4 py-2 border-t">{voucher.accountType}</td>
+                <td className="px-4 py-2 border-t">{voucher.amount}</td>
                 <td className="px-4 py-2 border-t">
-                  {accounts.transactionDate.split("T")[0]}
+                  {voucher.createdAt.split("T")[0]}
                 </td>
 
                 <td className="px-4 py-2 border-t flex justify-center">
-                  <ActionButton user={accounts} />
+                  {/* <ActionButton voucher={voucher} /> */}
                 </td>
               </tr>
             ))}

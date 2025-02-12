@@ -1,38 +1,16 @@
 import mongoose from "mongoose";
-const accountInfoSchema = new mongoose.Schema({
-  accountId: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  accountName: {
-    type: String,
-    required: true,
-  },
-  amount: { type: Number, required: true },
-});
-const accountSchema = new mongoose.Schema(
+const accountInfoSchema = new mongoose.Schema(
   {
-    voucherId: {
+    accountId: {
       type: String,
       required: true,
       unique: true,
-      trim: true,
-      index: true,
     },
-    accountInfo: {
-      type: Array,
-      default: [accountInfoSchema],
-      required: true,
-      trim: true,
-      index: true,
-    },
-    accountType: {
+    accountName: {
       type: String,
-      enum: ["credit", "debit", "journal"],
       required: true,
-      lowercase: true,
     },
+    amount: { type: Number, required: true },
     transactionDate: {
       type: Date,
       required: true,
@@ -43,6 +21,34 @@ const accountSchema = new mongoose.Schema(
       ref: "Transaction",
       unique: true,
     },
+    remarks: {
+      type: String,
+      trim: true,
+    },
+  },
+  { timestamps: true }
+);
+const accountSchema = new mongoose.Schema(
+  {
+    voucherId: {
+      type: String,
+      required: true,
+      unique: true,
+      trim: true,
+      index: true,
+    },
+    accountInfo: {
+      type: [accountInfoSchema],
+      default: [],
+      required: true,
+    },
+    accountType: {
+      type: String,
+      enum: ["credit", "debit", "journal"],
+      required: true,
+      lowercase: true,
+    },
+
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",

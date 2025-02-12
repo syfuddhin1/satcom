@@ -1,5 +1,8 @@
 import { areaModel } from "@/models/area-model";
 import connectMongo from "@/services/mongo";
+import { getNewAreaId } from "@/utils";
+import { revalidatePath } from "next/cache";
+import prisma from "@/prisma/db";
 
 /**
  * @description Retrieves all areas from MongoDB
@@ -8,14 +11,23 @@ import connectMongo from "@/services/mongo";
  * @throws {Error} If there's an error connecting to MongoDB or retrieving the area list
  */
 export async function GET(request, { params }) {
-  await connectMongo();
+  // await connectMongo();
 
   try {
-    const areaList = await areaModel.find({ "zone.code": params.id }).lean();
+    const areaList = await prisma.area.findMany({
+      where: {
+        zone: {
+          code: params.id,
+        },
+      },
+    });
+    console.log("====================================");
+console.log(areaList);
+console.log("====================================");
     const response = new Response(
       JSON.stringify({ status: "success", areaList }),
       {
-        status: 200,
+        status: 200,  
         headers: {
           "Content-Type": "application/json",
         },

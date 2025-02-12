@@ -11,7 +11,7 @@ export default async function UserPage() {
 
   return (
     <div className=" p-4 rounded-lg shadow-lg grid gap-4 grid-rows-auto ">
-      <FilterForm title={"Users"} />
+      <FilterForm title={"Customers"} />
       <div className="overflow-x-auto flex">
         <table className="table-auto w-full">
           <thead>

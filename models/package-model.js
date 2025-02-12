@@ -38,6 +38,12 @@ const internetPlanSchema = new mongoose.Schema(
       minlength: [2, "Provider name must be at least 2 characters"],
       maxlength: [100, "Provider name cannot exceed 100 characters"],
     },
+    users: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "users", // Reference to the users model
+      },
+    ],
   },
   {
     timestamps: true,

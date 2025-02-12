@@ -22,7 +22,7 @@ export default function CableForm() {
       body: JSON.stringify({
         name,
         speed,
-        price,
+        price: Number(price),
         description,
         provider,
       }),

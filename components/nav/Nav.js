@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { GoDot, GoDotFill } from "react-icons/go";
 import {
   FcBriefcase,
   FcClapperboard,
@@ -77,12 +78,12 @@ export default function SideBar() {
         {
           href: "/users",
           icon: <FcList className="text-3xl" />,
-          label: "List",
+          label: "Customers",
         },
         {
-          href: "/managers",
+          href: "/staffs",
           icon: <FcList className="text-3xl" />,
-          label: "Managers",
+          label: "Staffs",
         },
       ],
     },
@@ -117,6 +118,48 @@ export default function SideBar() {
           href: "/accounts/add",
           icon: <FcList className="text-3xl" />,
           label: "Add Account",
+        },
+      ],
+    },
+    {
+      href: "/report",
+      icon: <FcList className="text-3xl" />,
+      label: "Report",
+      subMenu: [
+        {
+          href: "/report/due",
+          icon: <FcList className="text-3xl" />,
+          label: "Due List",
+        },
+        {
+          href: "/report/monthly",
+          icon: <FcList className="text-3xl" />,
+          label: "Monthly Report",
+        },
+        {
+          href: "/report/transaction",
+          icon: <FcList className="text-3xl" />,
+          label: "Transaction Report",
+        },
+        {
+          href: "/report/cashbook",
+          icon: <FcList className="text-3xl" />,
+          label: "Cashbook Report",
+        },
+        {
+          href: "/report/revenue",
+          icon: <FcList className="text-3xl" />,
+          label: "Revenue Report",
+        },
+        {
+          href: "/report/ledger",
+          icon: <FcList className="text-3xl" />,
+          label: "Ledger Report",
+        },
+        {
+          href: "/report/balance",
+          icon: <FcList className="text-3xl" />,
+          label: "Balance Sheet",
         },
       ],
     },
@@ -211,9 +254,14 @@ export default function SideBar() {
                       : "hover:bg-[#9096ff] hover:text-white"
                   }`}
                 >
-                  <Link href={href} className="flex items-center gap-4 w-full">
-                    {icon}
-                    <span className={menu ? "hidden" : "block"}>{label}</span>
+                  <Link
+                    href={href}
+                    className="flex items-center gap-4 w-full"
+                  >
+                    <GoDotFill className="text-emerald-400" />
+                    <span className={menu ? "hidden" : "block"}>
+                      {label}
+                    </span>
                   </Link>
                 </AccordionContent>
               ))}

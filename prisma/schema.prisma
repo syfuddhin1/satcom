@@ -1,0 +1,175 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Zone {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  code        String   @unique
+  name        String
+  description String?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  Area        Area[]
+  User        User[]
+
+  @@index([code, isActive])
+}
+
+model Area {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  code        String   @unique
+  zone        Zone     @relation(fields: [zoneId], references: [id])
+  zoneId      String   @db.ObjectId
+  name        String
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  User User[]
+}
+
+model User {
+  id           String        @id @default(auto()) @map("_id") @db.ObjectId
+  zone         Zone          @relation(fields: [zoneId], references: [id])
+  zoneId       String        @db.ObjectId
+  area         Area          @relation(fields: [areaId], references: [id])
+  areaId       String        @db.ObjectId
+  memberCode   String        @unique
+  name         String
+  mobile       String        @unique
+  email        String?       @unique
+  nidNo        String        @unique
+  address      String?
+  mapLocation  String?
+  username     String?       @unique
+  password     String?
+  image        String?
+  userPackages UserPackage[] // Many-to-many relationship
+  status       String        @default("active")
+  role         String        @default("user")
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  Transaction  Transaction[]
+  voucher      voucher[]
+
+  @@index([zoneId, areaId])
+  @@index([status])
+  @@index([role])
+}
+
+model Package {
+  id           String        @id @default(auto()) @map("_id") @db.ObjectId
+  name         String
+  description  String?
+  speed        String
+  price        Float
+  provider     String
+  userPackages UserPackage[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  Transaction  Transaction[]
+
+  @@index([provider, speed])
+}
+
+model UserPackage {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId       String   @db.ObjectId
+  packageId    String   @db.ObjectId
+  user         User     @relation(fields: [userId], references: [id])
+  package      Package  @relation(fields: [packageId], references: [id])
+  billing_date DateTime @default(now())
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@unique([userId, packageId])
+}
+
+model Transaction {
+  id              String    @id @default(auto()) @map("_id") @db.ObjectId
+  transactionId   String    @unique
+  amount          Float
+  package         Package   @relation(fields: [packageId], references: [id])
+  packageId       String    @db.ObjectId
+  userId          String    @db.ObjectId
+  transactionDate DateTime  @default(now())
+  modeOfPayment   String
+  remarks         String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  User            User      @relation(fields: [userId], references: [id])
+  voucher         voucher[]
+
+  @@index([userId, transactionDate])
+  @@index([packageId, transactionDate])
+}
+
+model Account {
+  accountId   String    
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  accountType String
+  remarks     String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  voucher     voucher[]
+
+  @@index([accountType])
+  @@index([accountId])
+  @@index([createdAt])
+}
+
+model voucher {
+  id            String       @id @default(auto()) @map("_id") @db.ObjectId
+  voucherId     String        
+  accountId     String       @db.ObjectId
+  Account       Account      @relation(fields: [accountId], references: [id])
+  accountType   String
+  amount        Float
+  transactionId String?      @db.ObjectId
+  Transaction   Transaction? @relation(fields: [transactionId], references: [id])
+  remarks       String?
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  userId        String?      @db.ObjectId
+  User          User?        @relation(fields: [userId], references: [id])
+  moodOfPayment String?
+
+  @@index([accountId])
+  @@index([voucherId])
+  @@index([userId])
+  @@index([accountType])
+}
+
+model Asset {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  description String?
+  value       Float
+  type        String
+  location    String?
+  purchasedAt DateTime
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([type])
+  @@index([purchasedAt])
+}
+
+model AdminUser {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  username  String
+  password  String
+  role      String   @default("admin")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([username])
+  @@index([role])
+}

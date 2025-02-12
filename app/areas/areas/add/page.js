@@ -1,16 +1,17 @@
 "use client";
 
 import { getNewAreaId, getNewId } from "@/utils";
+
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
-export default function AddZone() {
+export default function AddAreas() {
   const [zoneList, setZoneList] = React.useState([]);
   const [formData, setFormData] = React.useState({
     code: "",
     name: "",
     description: "",
-    zone: "",
+    zoneId: "",
   });
   const router = useRouter();
   const handleChange = (e) => {
@@ -34,14 +35,16 @@ export default function AddZone() {
   const handleZoneChange = async (e) => {
     e.preventDefault();
     const zone = zoneList.find((zone) => zone.code === e.target.value);
+
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_APP_URI}/api/areas/areas`
     );
     const data = await res.json();
+
     setFormData((prevFormData) => ({
       ...prevFormData,
       code: getNewAreaId(e.target.value, data.areaList),
-      zone,
+      zoneId: zone.id,
     }));
   };
   const handleSubmit = async (e) => {
@@ -58,21 +61,22 @@ export default function AddZone() {
       }
     );
     if (response.ok) {
-      router.push("/areas/areas");
       router.refresh();
+      alert("Area added successfully");
+      router.back();
     }
   };
   return (
     <div className="p-5 flex flex-col h-full gap-5 justify-center items-center">
       <form
-        className="grid grid-cols-1 text-xl gap-4 font-bold p-10 rounded-md justify-items-center  w-1/3 *:grid *:gap-2 *:w-full"
+        className="grid grid-cols-1 text-sm gap-4 font-bold p-10 rounded-md justify-items-center  *:grid *:gap-2 *:w-full"
         onSubmit={handleSubmit}
       >
-        <h1 className="text-2xl font-bold text-center mb-4 border-b">
-          Add Zone
+        <h1 className="text-xl font-bold text-center mb-4 border-b">
+          Add Area
         </h1>
         <label>
-          Zone
+          Area
           <select
             name="zone"
             onChange={handleZoneChange}

@@ -36,6 +36,12 @@ const zoneSchema = new Schema(
       type: String,
       index: true, // Index for text search
     },
+    areas: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "areas", // Reference to the areas model
+      },
+    ],
   },
   {
     timestamps: true,

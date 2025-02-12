@@ -1,18 +1,14 @@
-import { areaModel } from "@/models/area-model";
-import { zoneModel } from "@/models/zone-model";
-import connectMongo from "@/services/mongo";
+import prisma from "@/prisma/db";
 import { getNewAreaId } from "@/utils";
 import { revalidatePath } from "next/cache";
-
-/**
- * @description Retrieves all areas from MongoDB
- * @returns {Response} A Response object with a JSON payload containing the area list
- * @throws {Error} If there's an error connecting to MongoDB or retrieving the area list
- */
 export async function GET(request) {
-  await connectMongo();
+  // await connectMongo();
   try {
-    const areaList = await areaModel.find(); // Use .find() to retrieve all documents
+    const areaList = await prisma.area.findMany({
+      include: {
+        zone: true
+      }
+    }); // Use .find() to retrieve all documents
 
     return new Response(
       JSON.stringify({ status: "success", areaList }), // Convert data to JSON string
@@ -41,14 +37,16 @@ export async function GET(request) {
 }
 
 export async function POST(request) {
-  await connectMongo();
+  // await connectMongo();
   try {
-    const areaList = await areaModel.find().lean();
+    // const areaList = await prisma.area.findMany();
     const data = await request.json();
-    const newAreaId = getNewAreaId(data.zone.code, areaList);
-    const newArea = await areaModel.create({
-      ...data,
-      code: newAreaId,
+    // const newAreaId = getNewAreaId(data.zone.code, areaList);
+    const newArea = await prisma.area.create({
+      data: {
+        ...data,
+        // code: newAreaId,
+      },
     });
     revalidatePath("/");
     return new Response(JSON.stringify({ status: "success", newArea }), {
@@ -75,11 +73,15 @@ export async function POST(request) {
 }
 
 export async function DELETE(request) {
-  await connectMongo();
+  // await connectMongo();
   try {
     const { searchParams } = new URL(request.url);
     const id = searchParams.get("id");
-    const deletedZone = await zoneModel.findByIdAndDelete(id);
+    const deletedZone = await prisma.areas.delete({
+      where: {
+        id: id,
+      },
+    });
     revalidatePath("/");
     return new Response(JSON.stringify({ status: "success", deletedZone }), {
       status: 200,

@@ -1,17 +1,30 @@
 "use client";
-import { useState } from "react";
+import { generateVoucherCode } from "@/lib/actions";
+import { useAddVoucherMutation, useFetchAccountsQuery } from "@/store/slices/accountsApi";
+import { useEffect, useState } from "react";
 
-export default function Form({ accountType, user, date }) {
+export default function Form({ accountType }) {
   const [formData, setFormData] = useState({
-    date: new Date().toISOString().slice(0, 10),
-    voucherCode: "",
+    createdAt: new Date().toISOString().slice(0, 10),
+    voucherId: "",
+    accountId: "",
     accountType: accountType,
-    creditAccounts: accountType == "payment" ? 108 : "",
-    debitAccounts: accountType == "receipt" ? 108 : "",
+    moodOfPayment: "",
     amount: "",
-    narration: "-",
+    remarks: "-",
   });
-
+  const { data } = useFetchAccountsQuery();
+  const [addVoucher, { isLoading, isSuccess }] = useAddVoucherMutation();
+  useEffect(() => {
+    async function getVoucherCode() {
+      const voucherId = await generateVoucherCode(formData.createdAt, accountType);
+      setFormData((prevState) => ({
+        ...prevState,
+        voucherId: voucherId,
+      }));
+    }
+    getVoucherCode();
+  }, [accountType, formData.createdAt]);
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevState) => ({
@@ -31,6 +44,13 @@ export default function Form({ accountType, user, date }) {
     }
   };
 
+  useEffect(() => {
+    if(isSuccess){
+      alert("Voucher added successfully");
+    }
+  },[isSuccess])
+console.log(data);
+
   return (
     <div className="w-full flex justify-center">
       <form
@@ -43,11 +63,11 @@ export default function Form({ accountType, user, date }) {
           <p>Date</p>
           <input
             type={"date"}
-            name="date"
-            value={formData.date}
+            name="createdAt"
+            value={formData.createdAt}
             onChange={handleChange}
             required
-            disabled={"true"}
+            // disabled={"true"}
           />
         </label>
 
@@ -55,10 +75,10 @@ export default function Form({ accountType, user, date }) {
           <p>Voucher Code</p>
           <input
             type={"text"}
-            name="voucherCode"
-            value={formData.voucherCode}
-            onChange={handleChange}
+            name="voucherId"
+            value={formData.voucherId}
             required
+            disabled={"true"}
           />
         </label>
         <label className={"none"}>
@@ -67,33 +87,38 @@ export default function Form({ accountType, user, date }) {
             type={"text"}
             name="accountType"
             value={formData.accountType}
-            onChange={handleChange}
             required
+            disabled={"true"}
           />
         </label>
         <label>
-          <p>Credit Accounts</p>
+          <p>Account</p>
           <select
-            name="creditAccounts"
-            value={formData.creditAccounts}
+            name="accountId"
+            value={formData.accountId}
             onChange={handleChange}
             required
-            disabled={accountType === "payment"}
           >
             <option>Select An option</option>
+            {data?.accountsData.map((account) => (
+              <option key={account.id} value={account.id}>
+                {account.title}
+              </option>
+            ))}
           </select>
         </label>
 
         <label>
-          <p>Debit Accounts</p>
+          <p>Payment Method</p>
           <select
-            name="debitAccounts"
-            value={formData.debitAccounts}
+            name="moodOfPayment"
+            value={formData.moodOfPayment}
             onChange={handleChange}
             required
-            disabled={accountType === "receipt"}
           >
             <option>Select An option</option>
+            <option value="cash">Cash</option>
+            <option value="bank">Bank</option>
           </select>
         </label>
         <label>
@@ -108,14 +133,14 @@ export default function Form({ accountType, user, date }) {
           />
         </label>
         <label className={"col-span-3"}>
-          <p>Narration</p>
+          <p>Remarks / Narration</p>
           <textarea
             type={"text"}
-            name="narration"
-            value={formData.narration}
+            name="remarks"
+            value={formData.remarks}
             onChange={handleChange}
             required={false}
-            placeholder="Narration"
+            placeholder="Remarks / Narration"
             rows={2}
             className="w-full "
           />
@@ -149,12 +174,3 @@ export default function Form({ accountType, user, date }) {
     </div>
   );
 }
-
-const generateVoucherCode = (branchDetails, voucher) => {
-  // Get the current date and time
-  const accountType = voucher == "payment" ? "PV" : "RV";
-  // Format the voucher code
-  const voucherCode = `${accountType}-${branchDetails.code}-${branchDetails.date}`;
-
-  return voucherCode;
-};

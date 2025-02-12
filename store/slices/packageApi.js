@@ -17,7 +17,45 @@ export const packagesApi = apiSlice.injectEndpoints({
     fetchPackageById: builder.query({
       query: (id) => `/packages/${id}`,
     }),
+    addPackage: builder.mutation({
+      query: (packageData) => ({
+        url: "/packages",
+        method: "POST",
+        body: packageData,
+      }),
+      invalidatesTags: ["Packages"],
+    }),
+    removePackage: builder.mutation({
+      query: (id) => ({
+        url: `/packages/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Packages"],
+    }),
+    updatePackage: builder.mutation({
+      query: ({ id, packageData }) => ({
+        url: `/packages/${id}`,
+        method: "PUT",
+        body: packageData,
+      }),
+      invalidatesTags: ["Packages"],
+    }),
+    updatePackageStatus: builder.mutation({
+      query: ({ id, status }) => ({
+        url: `/packages/${id}/status`,
+        method: "PUT",
+        body: { status },
+      }),
+      invalidatesTags: ["Packages"],
+    }),
   }),
 });
 
-export const { useFetchPackagesQuery, useFetchPackageByIdQuery } = packagesApi;
+export const {
+  useFetchPackagesQuery,
+  useFetchPackageByIdQuery,
+  useAddPackageMutation,
+  useRemovePackageMutation,
+  useUpdatePackageMutation,
+  useUpdatePackageStatusMutation,
+} = packagesApi;

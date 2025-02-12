@@ -19,6 +19,7 @@ export default function AddZone() {
       [name]: value,
     }));
   };
+
   useEffect(() => {
     async function getData() {
       const response = await fetch(
@@ -49,17 +50,18 @@ export default function AddZone() {
     );
 
     if (response.ok) {
-      router.push("/areas/zone");
       router.refresh();
+      alert("Zone added successfully");
+      router.back();
     }
   };
   return (
-    <div className="p-5 flex flex-col h-full gap-5 justify-center items-center">
+    <div className="p-5 flex flex-col h-full gap-5 justify-center items-center mx-auto">
       <form
-        className="grid grid-cols-1 text-xl gap-4 font-bold p-10 rounded-md justify-items-center  w-1/3 *:grid *:gap-2 *:w-full"
+        className="grid grid-cols-1 text-sm gap-4 font-bold p-10 rounded-md justify-items-center  *:grid *:gap-2 *:w-full"
         onSubmit={handleSubmit}
       >
-        <h1 className="text-2xl font-bold text-center mb-4 border-b">
+        <h1 className="text-md font-bold text-center mb-4 border-b">
           Add Zone
         </h1>
         <label>

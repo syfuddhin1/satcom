@@ -2,11 +2,12 @@ import { zoneModel } from "@/models/zone-model";
 import connectMongo from "@/services/mongo";
 import { getNewId } from "@/utils";
 import { revalidatePath, revalidateTag } from "next/cache";
-
+import prisma from "@/prisma/db";
 export async function GET(request) {
-  await connectMongo();
+  // await connectMongo();
   try {
-    const zoneList = await zoneModel.find(); // Use .find() to retrieve all documents
+    const zoneList = await prisma.zone.findMany(); // Use .find() to retrieve all documents
+console.log(zoneList);
 
     return new Response(
       JSON.stringify({ status: "success", zoneList }), // Convert data to JSON string
@@ -35,19 +36,23 @@ export async function GET(request) {
 }
 
 export async function POST(request) {
-  await connectMongo();
+  // await connectMongo();
   try {
-    const zoneList = await zoneModel.find().lean();
-
+    const zoneList = await prisma.zone.findMany(); // Use .find() to retrieve all documents
+    console.log(zoneList);
+    
     const newId = getNewId(zoneList);
     const data = await request.json();
 
-    const newZone = await zoneModel.create({
-      code: newId,
-      name: data.name,
-      description: data.description,
+    const newZone = await prisma.zone.create({
+      data: {
+        code: newId,
+        name: data.name,
+        description: data.description,
+      },
     });
     revalidatePath("/");
+
     return new Response(JSON.stringify({ status: "success", newZone }), {
       status: 201,
       headers: {

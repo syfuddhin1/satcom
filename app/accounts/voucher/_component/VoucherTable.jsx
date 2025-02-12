@@ -1,5 +1,5 @@
 import DeleteVoucher from "@/app/(dashboard)/add/_component/DeleteVoucher";
-import { getDateData, getVoucherDataByDate } from "@/lib/crud";
+import { getDateData, getVoucherDataByDate } from "@/lib/actions";
 import { getAccountsName } from "@/services/data";
 import { formatDate } from "@/utils/formatDate";
 const VouchersTable = async ({ voucherType }) => {

@@ -47,7 +47,7 @@ export default function FilterForm({ title }) {
             href="/users/add"
             className="p-2 px-4 border border-black rounded bg-indigo-400 text-white"
           >
-            Add New User
+            Add New Customer
           </Link>
         </div>
       </div>

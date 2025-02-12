@@ -13,26 +13,26 @@ export default function TransactionForm({ setShowForm }) {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      accountsId: "",
-      accountsName: "",
-      accountsType: "receipts",
+      accountId: "",
+      title: "",
+      accountType: "receipts",
     },
   });
 
   useEffect(() => {
     async function fetchData() {
-      fetch(`${process.env.NEXT_PUBLIC_APP_URI}/api/accounts/account`)
+      fetch(`${process.env.NEXT_PUBLIC_APP_URI}/api/accounts`)
         .then((res) => res.json())
         .then((data) => {
           const newId = data.accountsData.length + 1;
-          setValue("accountsId", newId.toString().padStart(3, "0"));
+          setValue("accountId", newId.toString().padStart(3, "0"));
         });
     }
     fetchData();
   }, [setValue]);
   const onSubmit = async (data) => {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_APP_URI}/api/accounts/account`,
+      `${process.env.NEXT_PUBLIC_APP_URI}/api/accounts`,
       {
         method: "POST",
         headers: {
@@ -43,7 +43,8 @@ export default function TransactionForm({ setShowForm }) {
     );
     const newData = await res.json();
     router.refresh();
-    if (res.statusCode === 200) {
+    if (res.status === 200) {
+      alert("Account created successfully");
       setShowForm(false);
     }
     console.log(newData);
@@ -78,21 +79,21 @@ export default function TransactionForm({ setShowForm }) {
             {/* accountsId */}
             <div className="flex items-center">
               <label className="w-1/3 text-sm font-medium">
-                accounts Id<span className="text-red-500">*</span>
+                account Id<span className="text-red-500">*</span>
               </label>
               <input
                 type="text"
                 disabled
                 placeholder="Type min 3 characters (eg. 001)..."
                 className="form-input w-2/3"
-                {...register("accountsId", {
-                  required: "accounts Id is required",
+                {...register("accountId", {
+                  required: "account Id is required",
                 })}
               />
             </div>
-            {errors.accountsId && (
+            {errors.accountId && (
               <span className="text-red-500 text-sm pl-[12.5rem]">
-                {errors.accountsId.message}
+                {errors.accountId.message}
               </span>
             )}
 
@@ -105,14 +106,14 @@ export default function TransactionForm({ setShowForm }) {
                 type="text"
                 className="form-input w-2/3"
                 placeholder="Type Accounts Name..."
-                {...register("accountsName", {
+                {...register("title", {
                   required: "accounts Name is required",
                 })}
               />{" "}
             </div>
-            {errors.accountsName && (
+            {errors.title && (
               <span className="text-red-500 text-sm pl-[12.5rem]">
-                {errors.accountsName.message}
+                {errors.title.message}
               </span>
             )}
             {/* accountsType */}
@@ -123,8 +124,8 @@ export default function TransactionForm({ setShowForm }) {
 
               <select
                 className="form-select w-2/3 capitalize"
-                {...register("accountsType", {
-                  required: "Accounts Type is required",
+                {...register("accountType", {
+                  required: "Account Type is required",
                 })}
               >
                 <option value="receipts">receipts</option>
