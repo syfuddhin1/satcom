@@ -79,14 +79,16 @@ model Package {
 }
 
 model UserPackage {
-  id           String   @id @default(auto()) @map("_id") @db.ObjectId
-  userId       String   @db.ObjectId
-  packageId    String   @db.ObjectId
-  user         User     @relation(fields: [userId], references: [id])
-  package      Package  @relation(fields: [packageId], references: [id])
-  billing_date DateTime @default(now())
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  id              String    @id @default(auto()) @map("_id") @db.ObjectId
+  userId          String    @db.ObjectId
+  packageId       String    @db.ObjectId
+  user            User      @relation(fields: [userId], references: [id])
+  package         Package   @relation(fields: [packageId], references: [id])
+  billing_date    DateTime  @default(now())
+  nextPaymentDate DateTime? // New field
+  currentDue      Float?    @default(0) // New field
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
 
   @@unique([userId, packageId])
 }
@@ -111,7 +113,7 @@ model Transaction {
 }
 
 model Account {
-  accountId   String    
+  accountId   String
   id          String    @id @default(auto()) @map("_id") @db.ObjectId
   title       String
   accountType String
@@ -127,7 +129,7 @@ model Account {
 
 model voucher {
   id            String       @id @default(auto()) @map("_id") @db.ObjectId
-  voucherId     String        
+  voucherId     String
   accountId     String       @db.ObjectId
   Account       Account      @relation(fields: [accountId], references: [id])
   accountType   String
@@ -164,12 +166,14 @@ model Asset {
 
 model AdminUser {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  username  String
+  name      String
+  email     String   @unique
+  phone     String   @unique
+  username  String   @unique
   password  String
   role      String   @default("admin")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@index([username])
   @@index([role])
 }

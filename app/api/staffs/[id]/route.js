@@ -1,3 +1,4 @@
+
 import prisma from "@/prisma/db";
 
 // Helper function to handle errors
@@ -12,23 +13,8 @@ const handleError = (error, status = 500) => {
 // GET: Fetch a user by ID
 export async function GET(request, { params }) {
   try {
-    const user = await prisma.user.findUnique({
+    const user = await prisma.adminUser.findUnique({
       where: { id: params.id },
-      include: {
-        zone: true,
-        area: true,
-        userPackages: {
-          include: {
-            package: true,
-          },
-        },
-        Transaction: {
-          include: {
-            package: true,
-          },
-        },
-        voucher: true,
-      },
     });
     if (!user) {
       return handleError(new Error("User not found"), 404);

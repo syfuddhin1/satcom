@@ -8,6 +8,7 @@ import { LuMessagesSquare } from "react-icons/lu";
 import { PiSunThin } from "react-icons/pi";
 import { useDispatch, useSelector } from "react-redux";
 import DropMenu from "./DropMenu";
+import UserSection from "./UserSection";
 export default function TopBar() {
   const [isDark, setDark] = useState(false);
   const menu = useSelector((state) => state.menu);
@@ -57,18 +58,7 @@ export default function TopBar() {
         <div>
           <LuMessagesSquare className="text-blue-400 drop-shadow-xl" />
         </div>
-        <div className="relative ">
-          <button className="text-blue-400 peer">
-            <Image
-              src="/assets/media/avatars/150-1.jpg"
-              alt="User"
-              className="rounded-full "
-              width={40}
-              height={40}
-            />
-          </button>
-          <DropMenu />
-        </div>
+        <UserSection />
       </div>
     </div>
   );

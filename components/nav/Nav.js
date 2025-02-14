@@ -131,16 +131,16 @@ export default function SideBar() {
           icon: <FcList className="text-3xl" />,
           label: "Due List",
         },
-        {
-          href: "/report/monthly",
-          icon: <FcList className="text-3xl" />,
-          label: "Monthly Report",
-        },
-        {
-          href: "/report/transaction",
-          icon: <FcList className="text-3xl" />,
-          label: "Transaction Report",
-        },
+        // {
+        //   href: "/report/monthly",
+        //   icon: <FcList className="text-3xl" />,
+        //   label: "Monthly Report",
+        // },
+        // {
+        //   href: "/report/transaction",
+        //   icon: <FcList className="text-3xl" />,
+        //   label: "Transaction Report",
+        // },
         {
           href: "/report/cashbook",
           icon: <FcList className="text-3xl" />,
@@ -149,53 +149,53 @@ export default function SideBar() {
         {
           href: "/report/revenue",
           icon: <FcList className="text-3xl" />,
-          label: "Revenue Report",
+          label: "Income Statement",  
         },
-        {
-          href: "/report/ledger",
-          icon: <FcList className="text-3xl" />,
-          label: "Ledger Report",
-        },
-        {
-          href: "/report/balance",
-          icon: <FcList className="text-3xl" />,
-          label: "Balance Sheet",
-        },
+        // {
+        //   href: "/report/ledger",
+        //   icon: <FcList className="text-3xl" />,
+        //   label: "Ledger Report",
+        // },
+        // {
+        //   href: "/report/balance",
+        //   icon: <FcList className="text-3xl" />,
+        //   label: "Balance Sheet",
+        // },
       ],
     },
-    {
-      href: "/inventory",
-      icon: <FcBriefcase className="text-3xl" />,
-      label: "Inventory",
-      subMenu: [
-        {
-          href: "/inventory",
-          icon: <FcList className="text-3xl" />,
-          label: "List",
-        },
-        {
-          href: "/inventory/add",
-          icon: <FcList className="text-3xl" />,
-          label: "Add",
-        },
-      ],
-    },
+    // {
+    //   href: "/inventory",
+    //   icon: <FcBriefcase className="text-3xl" />,
+    //   label: "Inventory",
+    //   subMenu: [
+    //     {
+    //       href: "/inventory",
+    //       icon: <FcList className="text-3xl" />,
+    //       label: "List",
+    //     },
+    //     {
+    //       href: "/inventory/add",
+    //       icon: <FcList className="text-3xl" />,
+    //       label: "Add",
+    //     },
+    //   ],
+    // },
     {
       href: "/settings",
       icon: <FcSettings className="text-3xl" />,
       label: "Settings",
-      subMenu: [
-        {
-          href: "/settings",
-          icon: <FcList className="text-3xl" />,
-          label: "List",
-        },
-        {
-          href: "/settings/add",
-          icon: <FcList className="text-3xl" />,
-          label: "Add",
-        },
-      ],
+      // subMenu: [
+      //   {
+      //     href: "/settings",
+      //     icon: <FcList className="text-3xl" />,
+      //     label: "List",
+      //   },
+      //   {
+      //     href: "/settings/add",
+      //     icon: <FcList className="text-3xl" />,
+      //     label: "Add",
+      //   },
+      // ],
     },
   ];
   const handleHover = (e) => {
