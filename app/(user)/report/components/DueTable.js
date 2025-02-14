@@ -1,7 +1,7 @@
 "use client";
 import { useState, useMemo, useEffect, useRef } from "react";
 import { Search } from "lucide-react";
-import FIlterMenu from "./FIlterMEnu";
+import FIlterMenu from "./FIlterMenu";
 
 const ITEMS_PER_PAGE = 10;
 
