@@ -1,4 +1,4 @@
-import AddUserPage from "@/app/users/add/page";
+import AddUserPage from "@/app/(user)/users/add/page";
 import Modal from "@/components/ui/Modal";
 
 export default function UserAddModal() {

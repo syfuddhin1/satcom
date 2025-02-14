@@ -1,4 +1,4 @@
-import AddZone from "@/app/areas/zone/add/page";
+import AddZone from "@/app/(user)/areas/zone/add/page";
 import Modal from "@/components/ui/Modal";
 import React from "react";
 
