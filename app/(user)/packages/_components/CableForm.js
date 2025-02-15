@@ -1,127 +1,160 @@
 "use client";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
-export default function CableForm() {
+export default function CableForm({ editData = null, setIsOpen }) {
   const router = useRouter();
-  const handleSubmit = async (e) => {
-    // Handle form submission here
-    e.preventDefault();
-    const formData = new FormData(e.target);
-    const name = formData.get("name");
-    const speed = formData.get("speed");
-    const price = formData.get("price");
-    const description = formData.get("description");
-    const provider = "cable";
-    // Perform API call to save the plan
-    const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URI}/api/packages`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name,
-        speed,
-        price: Number(price),
-        description,
-        provider,
-      }),
-    });
-    if (res.ok) {
-      console.log("Plan saved successfully");
+  const [formData, setFormData] = useState({
+    name: "",
+    speed: "",
+    price: "",
+    description: "",
+  });
 
-      // Redirect to the plans page or display a success message
-      router.refresh();
-    } else {
-      console.error("Failed to save plan");
+  useEffect(() => {
+    if (editData) {
+      setFormData({
+        name: editData.name,
+        speed: editData.speed,
+        price: editData.price,
+        description: editData.description || "",
+      });
+    }
+  }, [editData]);
+
+  const isEditMode = Boolean(editData);
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const endpoint = editData
+      ? `${process.env.NEXT_PUBLIC_APP_URI}/api/packages/${editData.id}`
+      : `${process.env.NEXT_PUBLIC_APP_URI}/api/packages`;
+
+    try {
+      const res = await fetch(endpoint, {
+        method: editData ? "PUT" : "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...formData,
+          price: Number(formData.price),
+          provider: "cable",
+        }),
+      });
+
+      if (res.ok) {
+        toast.success(
+          editData ? "Plan updated successfully" : "Plan added successfully"
+        );
+        router.refresh();
+        if (!editData) {
+          setFormData({
+            name: "",
+            speed: "",
+            price: "",
+            description: "",
+          });
+        }
+        setIsOpen(false);
+      }
+    } catch (error) {
+      toast.error(editData ? "Failed to update plan" : "Failed to add plan");
     }
   };
+
   return (
-    <div className="max-w-4xl mx-auto mt-10 p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md">
-      <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-4 text-center border-b-[1px] border-gray-300/30 p-2">
-        Add Cable Tv Plan
+    <div className="max-w-4xl mx-auto mt-10 p-8 bg-white dark:bg-gray-800 rounded-xl shadow-lg">
+      <h2 className="text-3xl font-bold text-gray-800 dark:text-gray-200 mb-6 text-center">
+        {editData ? "Edit Cable TV Plan" : "Add Cable TV Plan"}
       </h2>
-      <form
-        id="internet-plan-form"
-        className="gap-2 grid grid-cols-2 grid-rows-3"
-        onSubmit={handleSubmit}
-      >
-        {/* <!-- Name Field --> */}
-        <div>
-          <label
-            htmlFor="name"
-            className="block text-gray-700 dark:text-gray-300 mb-2 font-semibold"
-          >
-            Plan Name
-          </label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100"
-            placeholder="Enter plan name"
-            required
-          />
-        </div>
-        {/* <!-- Speed Field --> */}
-        <div>
-          <label
-            htmlFor="speed"
-            className="block text-gray-700 dark:text-gray-300 mb-2 font-semibold"
-          >
-            No Of Channel (e.g., 50 or 100)
-          </label>
-          <input
-            type="text"
-            id="speed"
-            name="speed"
-            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100"
-            placeholder="Enter channel Amount"
-            required
-          />
+
+      <form className="space-y-6" onSubmit={handleSubmit}>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+              Plan Name
+            </label>
+            <input
+              type="text"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white transition duration-200"
+              placeholder="Enter plan name"
+              required
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+              Number of Channels
+            </label>
+            <input
+              type="text"
+              name="speed"
+              value={formData.speed}
+              onChange={handleChange}
+              className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white transition duration-200"
+              placeholder="e.g., 50 or 100"
+              required
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+              Price (BDT)
+            </label>
+            <input
+              type="number"
+              name="price"
+              value={formData.price}
+              onChange={handleChange}
+              className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white transition duration-200"
+              placeholder="Enter price"
+              required
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+              Description
+            </label>
+            <textarea
+              name="description"
+              value={formData.description}
+              onChange={handleChange}
+              rows={3}
+              className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white transition duration-200"
+              placeholder="Enter description"
+            ></textarea>
+          </div>
         </div>
 
-        {/* <!-- Price Field --> */}
-        <div>
-          <label
-            htmlFor="price"
-            className="block text-gray-700 dark:text-gray-300 mb-2 font-semibold"
+        <div className="flex items-center justify-end space-x-4 pt-4">
+          <button
+            type="button"
+            onClick={() => setIsOpen(false)}
+            className="px-6 py-2.5 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors duration-200"
           >
-            Price (in Taka)
-          </label>
-          <input
-            type="number"
-            id="price"
-            name="price"
-            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100"
-            placeholder="Enter price"
-            required
-          />
-        </div>
-        {/* description field */}
-        <div className="row-span-2">
-          <label
-            htmlFor="description"
-            className="block text-gray-700 dark:text-gray-300 mb-2 font-semibold"
+            Cancel
+          </button>
+          <button
+            type="submit"
+            className="px-6 py-2.5 bg-emerald-200 text-black rounded-lg hover:bg-emerald-300 focus:ring-4 focus:ring-emerald-200 transition-colors duration-200"
           >
-            Description
-          </label>
-          <textarea
-            id="description"
-            name="description"
-            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100"
-            placeholder="Enter description"
-            rows={3}
-          ></textarea>
+            {isEditMode ? "Update Plan" : "Add Plan"}
+          </button>
         </div>
-        {/* <!-- Submit Button --> */}
-
-        <button
-          type="submit"
-          className="w-full h-10 bg-blue-500 text-white font-medium py-2 rounded-md hover:bg-blue-600 transition duration-200 dark:bg-blue-600 dark:hover:bg-blue-700"
-        >
-          Add Plan
-        </button>
       </form>
     </div>
   );

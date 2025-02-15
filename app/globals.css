@@ -76,7 +76,7 @@ body {
     @apply bg-background text-foreground;
   }
   select {
-    @apply bg-input text-foreground h-10 rounded px-4;
+    @apply bg-white text-foreground h-10 rounded px-4;
   }
   input[type="text"],
   input[type="email"],
@@ -90,15 +90,15 @@ body {
   input[type="month"],
   input[type="week"],
   input[type="search"] {
-    @apply bg-input text-foreground h-10 rounded px-4;
+    @apply bg-white text-foreground h-10 rounded px-4;
   }
   textarea {
-    @apply bg-input text-foreground  rounded px-4 p-2;
+    @apply bg-white text-foreground  rounded px-4 p-2;
   }
   input:disabled,
   textarea:disabled,
   select:disabled {
-    @apply bg-muted-foreground text-muted cursor-not-allowed;
+    @apply bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-500 cursor-not-allowed;
   }
 }
 

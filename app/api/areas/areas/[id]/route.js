@@ -22,12 +22,12 @@ export async function GET(request, { params }) {
       },
     });
     console.log("====================================");
-console.log(areaList);
-console.log("====================================");
+    console.log(areaList);
+    console.log("====================================");
     const response = new Response(
       JSON.stringify({ status: "success", areaList }),
       {
-        status: 200,  
+        status: 200,
         headers: {
           "Content-Type": "application/json",
         },
@@ -50,5 +50,41 @@ console.log("====================================");
     );
 
     return response;
+  }
+}
+
+export async function PUT(request, { params }) {
+  // await connectMongo();
+  try {
+    const data = await request.json();
+    const updatedArea = await prisma.area.update({
+      where: {
+        id: params.id,
+      },
+      data: {
+        ...data,
+      },
+    });
+    revalidatePath("/areas/areas");
+    return new Response(JSON.stringify({ status: "success", updatedArea }), {
+      status: 200,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  } catch (error) {
+    console.error("Error updating area:", error);
+    return new Response(
+      JSON.stringify({
+        status: "error",
+        message: "Failed to update area",
+      }),
+      {
+        status: 500,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
   }
 }

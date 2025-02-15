@@ -4,14 +4,15 @@ import { getNewId } from "@/utils";
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 
-export default function AddZone() {
+export default function AddZone({ editData, setIsOpen }) {
   // const newId = getNewId(data?.zoneList);
   const [formData, setFormData] = React.useState({
-    code: "",
-    name: "",
-    description: "",
+    code: editData?.code || "",
+    name: editData?.name || "",
+    description: editData?.description || "",
   });
   const router = useRouter();
+  const isEditMode = Boolean(editData);
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevFormData) => ({
@@ -21,6 +22,9 @@ export default function AddZone() {
   };
 
   useEffect(() => {
+    if (!isEditMode) {
+      getData();
+    }
     async function getData() {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_APP_URI}/api/areas/zone`
@@ -32,82 +36,103 @@ export default function AddZone() {
         code: newId,
       }));
     }
-    getData();
-  }, []);
+  }, [isEditMode]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_APP_URI}/api/areas/zone`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      }
-    );
+    const url = `${process.env.NEXT_PUBLIC_APP_URI}/api/areas/zone${
+      isEditMode ? `/${editData.id}` : ""
+    }`;
+    const response = await fetch(url, {
+      method: isEditMode ? "PUT" : "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
 
     if (response.ok) {
       router.refresh();
-      alert("Zone added successfully");
-      router.back();
+      alert(`Zone ${isEditMode ? "updated" : "added"} successfully`);
+      // router.back();
+      setIsOpen(false);
     }
   };
   return (
-    <div className="p-5 flex flex-col h-full gap-5 justify-center items-center mx-auto">
-      <form
-        className="grid grid-cols-1 text-sm gap-4 font-bold p-10 rounded-md justify-items-center  *:grid *:gap-2 *:w-full"
-        onSubmit={handleSubmit}
-      >
-        <h1 className="text-md font-bold text-center mb-4 border-b">
-          Add Zone
-        </h1>
-        <label>
-          Code
-          <input
-            type="text"
-            name="code"
-            value={formData.code}
-            disabled
-            onChange={handleChange}
-            placeholder="001"
-            required
-            className="w-full border border-slate-300 rounded-md p-2"
-          />
-        </label>
-
-        <label>
-          Name{" "}
-          <input
-            type="text"
-            name="name"
-            value={formData.name}
-            required
-            onChange={handleChange}
-            placeholder="write a name...!"
-            className="w-full border border-slate-300 rounded-md p-2 capitalize"
-          />
-        </label>
-
-        <label>
-          Description
-          <textarea
-            type="text"
-            name="description"
-            onChange={handleChange}
-            value={formData.description}
-            placeholder="write a description...!"
-            rows="3"
-            className="w-full border border-slate-300 rounded-md p-2"
-          />
-        </label>
-
-        <button className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-all duration-200">
-          Save
-        </button>
-      </form>
+    <div className=" p-16 flex items-center justify-center bg-gray-950/10 shadow-inner shadow-blue-500/40 rounded-xl">
+      <div className="w-full max-w-2xl bg-white rounded-xl shadow-lg">
+        <div className="px-8 py-6 border-b border-gray-100">
+          <h1 className="text-2xl font-semibold text-gray-800">
+            {isEditMode ? "Edit Zone" : "Add New Zone"}
+          </h1>
+          <p className="mt-2 text-sm text-gray-600">
+            {isEditMode
+              ? "Update the zone information below"
+              : "Fill in the information to create a new zone"}
+          </p>
+        </div>
+        <form onSubmit={handleSubmit} className="p-8 space-y-6">
+          <div className="space-y-2">
+            <label className="block text-sm font-medium text-gray-700">
+              Code
+            </label>
+            <input
+              type="text"
+              name="code"
+              value={formData.code}
+              disabled
+              onChange={handleChange}
+              placeholder="001"
+              required
+              className="w-full px-4 py-2.5 bg-gray-50 rounded-lg border border-gray-300 text-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-400"
+            />
+          </div>
+          <div className="space-y-2">
+            <label className="block text-sm font-medium text-gray-700">
+              Name{" "}
+            </label>
+            <input
+              type="text"
+              name="name"
+              value={formData.name}
+              required
+              onChange={handleChange}
+              placeholder="write a name...!"
+              className="w-full px-4 py-2.5 bg-gray-50 rounded-lg border border-gray-300 text-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-400"
+            />
+          </div>
+          <div className="space-y-2">
+            <label className="block text-sm font-medium text-gray-700">
+              Description
+            </label>
+            <textarea
+              type="text"
+              name="description"
+              onChange={handleChange}
+              value={formData.description}
+              placeholder="write a description...!"
+              rows="3"
+              className="w-full px-4 py-2.5 bg-gray-50 rounded-lg border border-gray-300 text-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-400"
+            />
+          </div>
+          <div className="flex items-center justify-end space-x-4 pt-4">
+            <button
+              type="button"
+              onClick={() => setIsOpen(false)}
+              className="px-6 py-2.5 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors duration-200"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="px-6 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-200 transition-colors duration-200"
+            >
+              {isEditMode ? "Update Zone" : "Create Zone"}
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }

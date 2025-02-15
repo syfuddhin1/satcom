@@ -6,8 +6,8 @@ export async function GET(request) {
   try {
     const areaList = await prisma.area.findMany({
       include: {
-        zone: true
-      }
+        zone: true,
+      },
     }); // Use .find() to retrieve all documents
 
     return new Response(
@@ -72,31 +72,35 @@ export async function POST(request) {
   }
 }
 
-export async function DELETE(request) {
+export async function DELETE(request, { params }) {
   // await connectMongo();
   try {
-    const { searchParams } = new URL(request.url);
-    const id = searchParams.get("id");
-    const deletedZone = await prisma.areas.delete({
+    const id = params.id;
+    const deletedArea = await prisma.area.delete({
       where: {
         id: id,
       },
     });
     revalidatePath("/");
-    return new Response(JSON.stringify({ status: "success", deletedZone }), {
+    return new Response(JSON.stringify({ status: "success", deletedArea }), {
       status: 200,
       headers: {
         "Content-Type": "application/json",
       },
     });
   } catch (error) {
-    console.error("Error deleting zone:", error);
+    console.error("Error deleting area:", error);
     return new Response(
       JSON.stringify({
         status: "error",
-        message: "Failed to delete zone",
+        message: "Failed to delete area",
       }),
-      {}
+      {
+        status: 500,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
     );
   }
 }

@@ -1,11 +1,13 @@
+import "@/app/globals.css";
 import { auth } from "@/auth";
 import SideBar from "@/components/nav/Nav";
-import TopBar from "@/components/nav/TopBar";
 import { SessionProvider } from "next-auth/react";
 import { Poppins } from "next/font/google";
 import { redirect } from "next/navigation";
-import "@/app/globals.css";
+
+import { ToastContainer } from "react-toastify";
 import ReduxProvider from "./ReduxProvider";
+import TopBar from "@/components/nav/TopBar";
 const poppins = Poppins({
   subsets: ["latin"],
   weight: ["400", "700"],
@@ -44,7 +46,8 @@ export default async function RootLayout({ children, modal }) {
                 </Link>
               </footer> */}
               </main>
-            </div>
+            </div>  
+            <ToastContainer />
           </ReduxProvider>
         </SessionProvider>
       </body>

@@ -1,9 +1,9 @@
-import React from "react";
-import InternetForm from "../_components/InternetForm";
-import ActionButton from "@/components/users/ActionButton";
+
+import UniversalAddButton from "@/components/ui/UniversalAddButton";
+import ActionButtons from "../_components/ActionButtons";
 import CableForm from "../_components/CableForm";
 
-export default async function InternetPage() {
+export default async function CablePage() {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_APP_URI}/api/packages?provider=cable`,
     {
@@ -11,45 +11,73 @@ export default async function InternetPage() {
     }
   );
   const { packageData } = await res.json();
-  return (
-    <div>
-      <CableForm />
 
-      <div className="overflow-x-auto flex mt-10">
-        <table className="table-auto w-full">
-          <caption className="text-center text-xl p-2 font-bold">
-            Cable Tv Packages
-          </caption>
-          <thead>
-            <tr className="bg-gray-100 dark:bg-gray-100/10">
-              <th className="px-4 py-2">#</th>
-              <th className="px-4 py-2">Name</th>
-              <th className="px-4 py-2">No of Channels</th>
-              <th className="px-4 py-2">Price</th>
-              <th className="px-4 py-2">Description</th>
-              <th className="px-4 py-2">Action</th>
-            </tr>
-          </thead>
-          <tbody className="text-center">
-            {packageData.map((pack, i) => (
-              <tr
-                key={pack.code}
-                className="even:bg-gray-100 even:dark:bg-gray-100/10"
-              >
-                <td className="px-4 py-2 border-t">{i + 1}</td>
-                <td className="px-4 py-2 border-t">{pack.name}</td>
-                <td className="px-4 py-2 border-t">{pack.speed}</td>
-                <td className="px-4 py-2 border-t">{pack.price}</td>
-                <td className="px-4 py-2 border-t">
-                  {pack.description || "-"}
-                </td>
-                <td className="px-4 py-2 border-t flex justify-center">
-                  <ActionButton user={pack} />
-                </td>
+  return (
+    <div className="p-6">
+      {/* <CableForm /> */}
+
+      <div className="mt-10 bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+        <div className="flex justify-between items-center p-6 border-b border-gray-200 dark:border-gray-700">
+          <h3 className="text-2xl font-bold p-6 ">
+            Cable TV Packages
+          </h3>
+          <UniversalAddButton buttonText="Add New Plan">
+            <CableForm />
+          </UniversalAddButton>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead>
+              <tr className="bg-gray-50 dark:bg-gray-700">
+                <th className="px-6 py-4 text-left text-sm font-medium text-gray-500 dark:text-gray-300">
+                  #
+                </th>
+                <th className="px-6 py-4 text-left text-sm font-medium text-gray-500 dark:text-gray-300">
+                  Name
+                </th>
+                <th className="px-6 py-4 text-left text-sm font-medium text-gray-500 dark:text-gray-300">
+                  Channels
+                </th>
+                <th className="px-6 py-4 text-left text-sm font-medium text-gray-500 dark:text-gray-300">
+                  Price
+                </th>
+                <th className="px-6 py-4 text-left text-sm font-medium text-gray-500 dark:text-gray-300">
+                  Description
+                </th>
+                <th className="px-6 py-4 text-left text-sm font-medium text-gray-500 dark:text-gray-300">
+                  Actions
+                </th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+              {packageData.map((pack, i) => (
+                <tr
+                  key={pack.code}
+                  className="hover:bg-gray-50 dark:hover:bg-gray-700 transition duration-150"
+                >
+                  <td className="px-6 py-4 text-sm text-gray-500 dark:text-gray-300">
+                    {i + 1}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-500 dark:text-gray-300">
+                    {pack.name}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-500 dark:text-gray-300">
+                    {pack.speed}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-500 dark:text-gray-300">
+                    {pack.price}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-500 dark:text-gray-300">
+                    {pack.description || "-"}
+                  </td>
+                  <td className="px-6 py-4">
+                    <ActionButtons pack={pack} />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
