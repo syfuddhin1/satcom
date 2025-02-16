@@ -129,7 +129,7 @@ model Account {
 
 model voucher {
   id            String       @id @default(auto()) @map("_id") @db.ObjectId
-  voucherId     String
+  voucherId     String       @unique
   accountId     String       @db.ObjectId
   Account       Account      @relation(fields: [accountId], references: [id])
   accountType   String
@@ -144,7 +144,6 @@ model voucher {
   moodOfPayment String?
 
   @@index([accountId])
-  @@index([voucherId])
   @@index([userId])
   @@index([accountType])
 }

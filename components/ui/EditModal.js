@@ -3,10 +3,11 @@
 import { Pencil } from "lucide-react";
 import React, { useState } from "react";
 import Modal from "./NewModal";
+import { AiFillEdit } from "react-icons/ai";
 
 export default function UniversalEditButton({
   children,
-  className = "flex items-center gap-2",
+  className = "flex items-center gap-2 justify-center",
   buttonText = "Edit",
 }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -17,7 +18,7 @@ export default function UniversalEditButton({
         className={`${className} p-1 `}
         onClick={() => setIsOpen(true)}
       >
-      <Pencil className="h-4 w-4" />  {buttonText}
+      <AiFillEdit className="h-4 w-4" />  {buttonText}
       </button>
 
       {isOpen && (

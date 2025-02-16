@@ -60,7 +60,7 @@ export default function TransactionForm({ setShowForm }) {
         onClick={(e) => e.stopPropagation()}
       >
         <header className="modal-header flex justify-between rounded-md items-center p-4 bg-[#9096ff] text-white">
-          <h5 className="text-lg font-semibold">Add Monthly Transactions</h5>
+          <h5 className="text-lg font-semibold">Add Account</h5>
           <span
             className="cursor-pointer text-2xl"
             onClick={() => setShowForm(false)}

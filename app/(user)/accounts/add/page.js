@@ -13,7 +13,7 @@ export default async function accountsPage() {
       <div className="flex justify-center gap-5 h-16 border bg-slate-100 dark:bg-slate-50/10 items-center p-2 ">
         <h1 className="text-2xl font-bold">Accounts Page</h1>
       </div>
-      <FilterForm />
+      <FilterForm title={'Accounts'}/>
       {/* Your account table and pagination components go here */}
       <div className="overflow-x-auto flex">
         <table className="table-auto w-full">
@@ -38,7 +38,7 @@ export default async function accountsPage() {
                 <td className="px-4 py-2 border-t">{account.accountType}</td>
 
                 <td className="px-4 py-2 border-t flex justify-center">
-                  <ActionButton user={account} />
+                  {/* <ActionButton user={account} /> */}
                 </td>
               </tr>
             ))}

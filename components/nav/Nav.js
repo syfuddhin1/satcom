@@ -91,13 +91,13 @@ export default function SideBar() {
       href: "/transactions",
       icon: <FcMoneyTransfer className="text-3xl" />,
       label: "Transactions",
-      subMenu: [
-        {
-          href: "/transactions",
-          icon: <FcList className="text-3xl" />,
-          label: "List",
-        },
-      ],
+      // subMenu: [
+      //   {
+      //     href: "/transactions",
+      //     icon: <FcList className="text-3xl" />,
+      //     label: "List",
+      //   },
+      // ],
     },
     {
       href: "/accounts/list",

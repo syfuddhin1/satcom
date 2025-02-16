@@ -1,18 +1,19 @@
-import ActionButton from "@/components/users/ActionButton";
-import FilterForm from "../FilterForm";
 
 export default async function AccountsPage() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URI}/api/accounts/vouchers`, {
-    cache: "no-store",
-  });
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_APP_URI}/api/accounts/vouchers`,
+    {
+      cache: "no-store",
+    }
+  );
   const { vouchers } = await res.json();
-  // console.log(vouchers);
+
   return (
     <div className="relative h-full">
       <div className="flex justify-center gap-5 h-16 border bg-slate-100 dark:bg-slate-50/10 items-center p-2 ">
         <h1 className="text-2xl font-bold">AccountsPage</h1>
       </div>
-      <FilterForm />
+      {/* <FilterForm /> */}
 
       <div className="overflow-x-auto flex">
         <table className="table-auto w-full">

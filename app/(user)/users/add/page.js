@@ -4,14 +4,15 @@ import { useFetchAreaByCodeQuery } from "@/store/slices/areaApi";
 import {
   useAddUserMutation,
   useFetchUserByAreaQuery,
+  useFetchUserByIdQuery,
+  useUpdateUserMutation,
 } from "@/store/slices/userApi";
 import { useGetZonesQuery } from "@/store/slices/zoneApi";
 import { getNewUserId } from "@/utils";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 
-export default function AddUserPage() {
+export default function UserFormPage({ setIsOpen, editData = null }) {
   const [formData, setFormData] = React.useState({
     zone: "",
     area: "",
@@ -24,31 +25,44 @@ export default function AddUserPage() {
     mapLocation: "",
     status: "active",
     role: "user",
-    username:"",
+    username: "",
   });
-
+  const userId = editData?.id;
+  const isEditMode = !!editData;
   const { data: zone } = useGetZonesQuery();
   const { data: area } = useFetchAreaByCodeQuery(formData.zone);
   const { data: user } = useFetchUserByAreaQuery(formData.area);
   const router = useRouter();
-  const [addUser, { isLoading }] = useAddUserMutation();
+  const [addUser, { isLoading: isAddLoading }] = useAddUserMutation();
+  const [updateUser, { isLoading: isUpdateLoading }] = useUpdateUserMutation();
 
   useEffect(() => {
-    if (area?.areaList && formData.area !== "") {
+    if (editData) {
+      setFormData(editData);
+    }
+  }, [editData]);
+
+  useEffect(() => {
+    if (area?.areaList && formData.area !== "" && !userId) {
       const newId = getNewUserId(formData.area, user?.userData);
       setFormData((prevFormData) => ({
         ...prevFormData,
         memberCode: newId,
       }));
     }
-  }, [formData.area, user, area?.areaList]);
+  }, [formData.area, user, area?.areaList, userId]);
 
-  const handleSubmitRegistration = async (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    const response = await addUser(formData).unwrap();
+    let response;
+    if (userId) {
+      response = await updateUser({ id: userId, ...formData }).unwrap();
+    } else {
+      response = await addUser(formData).unwrap();
+    }
     if (response.status === "success") {
-      router.push("/users");
       router.refresh();
+      setIsOpen(false);
     }
   };
 
@@ -58,14 +72,16 @@ export default function AddUserPage() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
+    <div className="max-w-4xl mx-auto bg-white shadow-lg rounded-lg overflow-hidden text-start">
       <div className="px-6 py-4 bg-gray-50 border-b border-gray-200">
-        <h2 className="text-2xl font-bold text-gray-800">Add New Customer</h2>
+        <h2 className="text-2xl font-bold text-gray-800">
+          {userId ? "Edit Customer" : "Add New Customer"}
+        </h2>
       </div>
-      <form onSubmit={handleSubmitRegistration} className="p-6">
+      <form onSubmit={handleSubmit} className="p-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-4">
-            <div>
+            {!isEditMode &&   <div>
               <label
                 htmlFor="zone"
                 className="block text-sm font-medium text-gray-700 mb-1"
@@ -87,9 +103,9 @@ export default function AddUserPage() {
                     </option>
                   ))}
               </select>
-            </div>
+            </div>}
 
-            <div>
+            {!isEditMode &&   <div>
               <label
                 htmlFor="area"
                 className="block text-sm font-medium text-gray-700 mb-1"
@@ -111,7 +127,7 @@ export default function AddUserPage() {
                     </option>
                   ))}
               </select>
-            </div>
+            </div>}
 
             <div>
               <label
@@ -126,6 +142,7 @@ export default function AddUserPage() {
                 name="memberCode"
                 value={formData.memberCode}
                 onChange={handleChange}
+                disabled={isEditMode}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Member Code"
               />
@@ -161,6 +178,7 @@ export default function AddUserPage() {
                 type="tel"
                 id="mobile"
                 name="mobile"
+                disabled={isEditMode}
                 value={formData.mobile}
                 onChange={handleChange}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
@@ -169,24 +187,7 @@ export default function AddUserPage() {
                 required
               />
             </div>
-            <div>
-            <label
-              htmlFor="username"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
-              Username
-            </label>
-            <input
-              type="text"
-              id="username"
-              name="username"
-              onChange={handleChange}
-              value={formData.username}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              placeholder="Username"
-            />
             
-          </div>
           </div>
 
           <div className="space-y-4">
@@ -209,7 +210,7 @@ export default function AddUserPage() {
               />
             </div>
 
-            <div>
+            {!isEditMode &&   <div>
               <label
                 htmlFor="nidNo"
                 className="block text-sm font-medium text-gray-700 mb-1"
@@ -226,7 +227,7 @@ export default function AddUserPage() {
                 placeholder="NID No"
                 required
               />
-            </div>
+            </div>}
 
             <div>
               <label
@@ -247,7 +248,7 @@ export default function AddUserPage() {
               />
             </div>
 
-            <div>
+            {/* <div>
               <label
                 htmlFor="mapLocation"
                 className="block text-sm font-medium text-gray-700 mb-1"
@@ -263,7 +264,7 @@ export default function AddUserPage() {
                 className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Map Location"
               />
-            </div>
+            </div> */}
 
             <div>
               <label
@@ -283,8 +284,24 @@ export default function AddUserPage() {
                 <option value="inactive">Inactive</option>
               </select>
             </div>
-
-            <div>
+            {!isEditMode && (  <div>
+              <label
+                htmlFor="username"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
+                Username
+              </label>
+              <input
+                type="text"
+                id="username"
+                name="username"
+                onChange={handleChange}
+                value={formData.username}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Username"
+              />
+            </div> )}
+            {/* <div>
               <label
                 htmlFor="role"
                 className="block text-sm font-medium text-gray-700 mb-1"
@@ -303,19 +320,21 @@ export default function AddUserPage() {
                 <option value="admin">Admin</option>
                 <option value="manager">Manager</option>
               </select>
-            </div>
-            
+            </div> */}
           </div>
-        
         </div>
 
         <div className="mt-8 flex justify-center space-x-4">
           <button
             type="submit"
-            disabled={isLoading}
+            disabled={isAddLoading || isUpdateLoading}
             className="px-6 py-2 bg-blue-600 text-white rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:bg-blue-400 disabled:cursor-not-allowed"
           >
-            {isLoading ? "Submitting..." : "Submit"}
+            {isAddLoading || isUpdateLoading
+              ? "Submitting..."
+              : userId
+              ? "Update"
+              : "Submit"}
           </button>
           <button
             type="button"
@@ -332,6 +351,7 @@ export default function AddUserPage() {
                 mapLocation: "",
                 status: "active",
                 role: "user",
+                username: "",
               })
             }
             className="px-6 py-2 bg-gray-200 text-gray-700 rounded-md shadow-sm hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
@@ -339,7 +359,7 @@ export default function AddUserPage() {
             Reset
           </button>
           <button
-            onClick={() => router.back()}
+            onClick={() => setIsOpen(false)}
             className="px-6 py-2 bg-red-600 text-white rounded-md shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
           >
             Cancel
