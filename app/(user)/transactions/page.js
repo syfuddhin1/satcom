@@ -1,5 +1,6 @@
 import ActionButton from "@/components/users/ActionButton";
 import FilterForm from "./FilterForm";
+import DeleteTransaction from "./DeleteTransaction";
 
 export default async function TransactionsPage() {
   const res = await fetch(
@@ -63,7 +64,7 @@ export default async function TransactionsPage() {
                     {transaction.modeOfPayment}
                   </td>
                   <td className="px-4 py-2 border-t flex justify-center">
-                    <ActionButton user={transaction} />
+                    <DeleteTransaction id={transaction.id} />
                   </td>
                 </tr>
               ))}

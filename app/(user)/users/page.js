@@ -59,7 +59,7 @@ export default async function UserPage({ searchParams }) {
                   <td className="px-4 py-2 border-t">{user.nidNo}</td>
                   <td className="px-4 py-2 border-t">{user.address}</td>
                   <td className="px-4 py-2 border-t">{user.status}</td>
-                  <td className="px-4 py-2 border-t flex justify-center">
+                  <td className="px-4 py-2 border-t">
                     <ActionButton user={user} />
                   </td>
                 </tr>

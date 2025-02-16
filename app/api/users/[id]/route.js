@@ -40,9 +40,9 @@ export async function GET(request, { params }) {
 }
 
 // PATCH: Update user status
-export async function PATCH(request, { params }) {
+export async function PUT(request, { params }) {
   try {
-    const { status } = await request.json();
+    const { status,name,phone,address,email } = await request.json();
 
     // Validate status
     if (!["active", "inactive"].includes(status)) {
@@ -52,7 +52,7 @@ export async function PATCH(request, { params }) {
     // Update user status
     const updatedUser = await prisma.user.update({
       where: { id: params.id },
-      data: { status },
+      data: { status,name,phone,address,email },
     });
     if (!updatedUser) {
       return handleError(new Error("User not found"), 404);

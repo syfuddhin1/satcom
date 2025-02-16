@@ -26,6 +26,17 @@ export const usersApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["Users"],
     }),
+    updateUser: builder.mutation({
+      query: (user) => ({
+        url: `/users/${user.id}`,
+        method: "PUT",
+        body: user,
+      }),
+      invalidatesTags: (result, error, { userId }) => [
+        { type: "User", id: userId },
+        "Users",
+      ],
+    }),
     addUserPackage: builder.mutation({
       query: (packageData) => ({
         url: `/users/${packageData.userId}/packages`,
@@ -78,4 +89,5 @@ export const {
   useRemoveUserPackageMutation,
   useUpdateUserStatusMutation,
   useRemoveUserMutation,
+  useUpdateUserMutation,
 } = usersApi;
